@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  var INTRO_KEY = 'aa-intro-v1';
+  var INTRO_KEY = 'aa-intro-v2';
 
   /* ---------- Meniu mobil (S7): overlay full-screen #mobile-menu ---------- */
   var toggle = document.getElementById('nav-toggle');
@@ -83,7 +83,7 @@
   var seen = false;
   try { seen = !!sessionStorage.getItem(INTRO_KEY); } catch (e) {}
 
-  // Fără GSAP (CDN căzut), cu reduced-motion sau deja văzut: pagina rămâne statică, completă.
+  // Fără GSAP, cu reduced-motion sau deja văzut: pagina rămâne statică, completă.
   if (!window.gsap || reduced || seen || document.documentElement.classList.contains('no-intro')) {
     intro.remove();
     return;
@@ -91,45 +91,51 @@
 
   try { sessionStorage.setItem(INTRO_KEY, '1'); } catch (e) {}
 
-  /* Logo-ul REAL e o singură imagine pixel-perfect; „compunerea" lui se face
-     prin măștile SVG feathered din #im-mask (alb = vizibil). Elementele
-     logo-ului nu sunt niciodată deformate - animăm doar zonele de dezvăluire. */
+  /* Logo-ul real rămâne o singură imagine. Măștile SVG dezvăluie regiunile
+     separat, fără să redeseneze sau să deformeze identitatea originală. */
   var mark = document.getElementById('intro-mark');
+  if (!mark) {
+    intro.remove();
+    return;
+  }
+
   var ring = mark.querySelector('#im-ring');
   var letter = mark.querySelector('#im-letter');
   var leaves = mark.querySelectorAll('.im-leaf');
   var vine = mark.querySelector('#im-vine');
   var dots = mark.querySelectorAll('#im-dots circle');
-  var wordSmall = intro.querySelector('.intro-word-small');
-  var wordBig = intro.querySelector('.intro-word-big');
+  var wordmark = mark.querySelector('#im-wordmark');
   var skipBtn = document.getElementById('intro-skip');
   var nav = document.getElementById('nav');
   var navMark = nav ? nav.querySelector('.brand-mark') : null;
   var heroEls = gsap.utils.toArray('[data-hero-reveal]');
+  var navEls = [nav, navMark].filter(Boolean);
 
   var done = false;
   var tl = null;
+  var dockBox = null;
 
   /* Stări inițiale (doar pe ramura cu intro - CSS-ul implicit lasă totul vizibil) */
   gsap.set(nav, { autoAlpha: 0 });
+  if (navMark) gsap.set(navMark, { autoAlpha: 0 });
   gsap.set(heroEls, { autoAlpha: 0, y: 28 });
   /* cercul se „desenează": dasharray pe pathLength=1 */
   gsap.set(ring, { strokeDasharray: 1, strokeDashoffset: 1 });
-  gsap.set(letter, { autoAlpha: 0, y: 30 });
+  gsap.set(letter, { autoAlpha: 0, y: 24 });
   /* frunzele înfloresc din pețiol (originea = baza fiecărei frunze, în
      coordonatele viewBox-ului 0-1000) */
-  gsap.set(mark.querySelector('#im-leaf-sage'),  { scale: 0.4, autoAlpha: 0, svgOrigin: '468 442' });
-  gsap.set(mark.querySelector('#im-leaf-rose'),  { scale: 0.4, autoAlpha: 0, svgOrigin: '452 560' });
-  gsap.set(mark.querySelector('#im-leaf-olive'), { scale: 0.4, autoAlpha: 0, svgOrigin: '470 600' });
+  gsap.set(mark.querySelector('#im-leaf-sage'),  { scale: 0.35, rotation: -4, autoAlpha: 0, svgOrigin: '468 442' });
+  gsap.set(mark.querySelector('#im-leaf-rose'),  { scale: 0.35, rotation: 5, autoAlpha: 0, svgOrigin: '452 560' });
+  gsap.set(mark.querySelector('#im-leaf-olive'), { scale: 0.35, rotation: -3, autoAlpha: 0, svgOrigin: '470 600' });
   /* vrejul curge de sus în jos */
-  gsap.set(vine, { scaleY: 0, autoAlpha: 0, svgOrigin: '500 588' });
+  gsap.set(vine, { scaleY: 0, autoAlpha: 0, svgOrigin: '500 575' });
   gsap.set(dots, { scale: 0, autoAlpha: 0, transformOrigin: '50% 50%' });
-  gsap.set([wordSmall, wordBig], { autoAlpha: 0, y: 12 });
-  gsap.set(wordBig, { letterSpacing: '0.34em' });
+  gsap.set(wordmark, { scaleX: 0, autoAlpha: 0, svgOrigin: '500 902' });
 
   function cleanup() {
-    intro.remove();
-    gsap.set(nav, { clearProps: 'all' });
+    document.removeEventListener('keydown', onIntroKey);
+    if (intro.isConnected) intro.remove();
+    gsap.set(navEls, { clearProps: 'all' });
     gsap.set(heroEls, { clearProps: 'all' });
   }
 
@@ -137,25 +143,41 @@
     if (done) return;
     done = true;
     if (tl) tl.kill();
+    gsap.killTweensOf([intro, mark, skipBtn].concat(navEls, heroEls));
+    gsap.set(navEls, { clearProps: 'all' });
     gsap.to(intro, {
       autoAlpha: 0,
-      duration: 0.45,
+      duration: 0.35,
       ease: 'power2.out',
       onComplete: cleanup
     });
-    gsap.set(nav, { clearProps: 'all' });
     gsap.to(heroEls, {
       autoAlpha: 1, y: 0,
-      duration: 0.7, stagger: 0.08, ease: 'power3.out',
+      duration: 0.65, stagger: 0.07, ease: 'power3.out',
       onComplete: function () { gsap.set(heroEls, { clearProps: 'all' }); }
     });
   }
 
   skipBtn.addEventListener('click', function (e) { e.stopPropagation(); skip(); });
-  intro.addEventListener('pointerdown', skip);
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') skip();
+  intro.addEventListener('pointerdown', function (e) {
+    if (e.target !== skipBtn) skip();
   });
+  function onIntroKey(e) {
+    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') skip();
+  }
+  document.addEventListener('keydown', onIntroKey);
+
+  function measureDock() {
+    if (!navMark) return null;
+    var from = mark.getBoundingClientRect();
+    var to = navMark.getBoundingClientRect();
+    if (!from.width || !to.width) return null;
+    return {
+      x: to.left - from.left,
+      y: to.top - from.top,
+      scale: to.width / from.width
+    };
+  }
 
   function play() {
     if (done) return;
@@ -164,48 +186,46 @@
       defaults: { ease: 'power2.out' },
       onComplete: function () { done = true; cleanup(); }
     });
-    /* 1. Logo-ul se compune: cerc → literă → frunze → vrej → puncte
-       (aceeași coreografie ca înainte, aplicată măștilor de dezvăluire) */
-    tl.to(ring, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' })
-      .to(letter, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.55')
+    /* 1. Orbită → monogramă → frunze → vrej → puncte. */
+    tl.to(ring, { strokeDashoffset: 0, duration: 0.85, ease: 'power2.inOut' })
+      .to(letter, { autoAlpha: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.52')
       .to(leaves, {
-        scale: 1, autoAlpha: 1, duration: 0.8, stagger: 0.16, ease: 'power3.out'
-      }, '-=0.5')
-      .to(vine, { scaleY: 1, autoAlpha: 1, duration: 0.8, ease: 'power1.inOut' }, '-=0.4')
-      .to(dots, { scale: 1, autoAlpha: 1, duration: 0.4, stagger: 0.09, ease: 'power2.out' }, '-=0.55')
+        scale: 1, rotation: 0, autoAlpha: 1,
+        duration: 0.55, stagger: 0.12, ease: 'power3.out'
+      }, '-=0.42')
+      .to(vine, { scaleY: 1, autoAlpha: 1, duration: 0.55, ease: 'power1.inOut' }, '-=0.35')
+      .to(dots, { scale: 1, autoAlpha: 1, duration: 0.24, stagger: 0.06, ease: 'power2.out' }, '-=0.45')
 
-    /* 2. Numele asociației */
-      .to(wordSmall, { autoAlpha: 1, y: 0, duration: 0.5 }, '-=0.2')
-      .to(wordBig, { autoAlpha: 1, y: 0, letterSpacing: '0.14em', duration: 0.9, ease: 'power3.out' }, '<0.1')
+    /* 2. Wordmark original, complet; revelație centru → margini. */
+      .to(wordmark, { scaleX: 1, autoAlpha: 1, duration: 0.5, ease: 'power3.inOut' }, '-=0.08')
 
     /* 3. Respiro */
-      .to({}, { duration: 0.55 })
+      .to({}, { duration: 0.65 })
 
-    /* 4. Dock: logo-ul zboară în navbar, overlay-ul se dizolvă, hero-ul intră */
-      .add(function () {
-        if (navMark) {
-          try {
-            var from = mark.getBoundingClientRect();
-            var to = navMark.getBoundingClientRect();
-            gsap.to(mark, {
-              x: to.left - from.left,
-              y: to.top - from.top,
-              scale: to.width / from.width,
-              transformOrigin: '0 0',
-              duration: 0.9,
-              ease: 'power3.inOut'
-            });
-          } catch (e) { /* fallback: doar fade, mai jos */ }
-        }
-        gsap.to([wordSmall, wordBig, skipBtn], { autoAlpha: 0, duration: 0.35 });
-        gsap.to(intro, { backgroundColor: 'rgba(247, 239, 232, 0)', duration: 0.6, delay: 0.25 });
-        gsap.to(nav, { autoAlpha: 1, duration: 0.5, delay: 0.55 });
-        gsap.to(heroEls, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out', delay: 0.45 });
-      })
-      .to(mark, { autoAlpha: 0, duration: 0.25, delay: 1.05 });
+    /* 4. Dock: măsurare la momentul zborului, după orice resize/orientare. */
+      .addLabel('dock')
+      .add(function () { dockBox = measureDock(); }, 'dock')
+      .to(skipBtn, { autoAlpha: 0, duration: 0.2 }, 'dock')
+      .to(mark, {
+        x: function () { return dockBox ? dockBox.x : 0; },
+        y: function () { return dockBox ? dockBox.y : 0; },
+        scale: function () { return dockBox ? dockBox.scale : 0.12; },
+        transformOrigin: '0 0',
+        duration: 0.78,
+        ease: 'power3.inOut'
+      }, 'dock+=0.01')
+      .to(intro, { backgroundColor: 'rgba(247, 239, 232, 0)', duration: 0.52 }, 'dock+=0.16')
+      .to(nav, { autoAlpha: 1, duration: 0.38 }, 'dock+=0.30')
+      .to(heroEls, {
+        autoAlpha: 1, y: 0,
+        duration: 0.7, stagger: 0.09, ease: 'power3.out'
+      }, 'dock+=0.28')
+      .set(navMark, { autoAlpha: 1 }, 'dock+=0.74')
+      .to(mark, { autoAlpha: 0, duration: 0.14 }, 'dock+=0.74')
+      .to(intro, { autoAlpha: 0, duration: 0.18 }, 'dock+=0.84');
   }
 
-  /* Pornește după ce fonturile sunt gata (litera „A" e serif), cu plasă de siguranță. */
+  /* Asset-ul logo este preîncărcat; load + timeout acoperă cache rece și erori. */
   var started = false;
   function start() {
     if (started) return;
@@ -213,9 +233,8 @@
     play();
   }
 
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(start);
-  }
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
   setTimeout(start, 900);
 })();
 

@@ -22,14 +22,16 @@
   <meta name="twitter:image" content="https://artarului.ro/assets/img/og-image.jpg">
   <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96.png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/img/logo-1280.webp" as="image" type="image/webp">
+  <link rel="preload" href="assets/img/logo-640.png" as="image" type="image/png">
   <link rel="preload" href="assets/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
-  <link rel="stylesheet" href="css/style.css?v=20260707c">
+  <link rel="stylesheet" href="css/style.css?v=20260716-intro2">
   <script>
     /* Pre-render: dacă intro-ul a rulat deja în această sesiune (sau reduced motion), nu-l mai afișa deloc. */
     try {
-      if (sessionStorage.getItem('aa-intro-v1') || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (sessionStorage.getItem('aa-intro-v2') || matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('no-intro');
       }
     } catch (e) {}
@@ -175,24 +177,22 @@
   </svg>
 
   <!-- ============================================================
-       INTRO OVERLAY - logo-ul REAL (PNG transparent, pixel-perfect),
-       compus element cu element prin măști SVG feathered animate cu
-       GSAP: cerc → literă → frunze → vrej → puncte. O dată/sesiune.
-       Geometria măștilor e măsurată din Logo.png (viewBox 0-1000).
+       INTRO OVERLAY - logo real, compus circular prin măști SVG:
+       orbită → literă → frunze → vrej → puncte → wordmark integral.
+       La final, logo-ul complet zboară spre marcajul din navbar.
+       Geometria măștilor e măsurată din logo (viewBox 0-1000).
        ============================================================ -->
-  <div id="intro" aria-hidden="true">
+  <div id="intro">
     <div class="intro-inner">
       <svg id="intro-mark" class="intro-mark" viewBox="0 0 1000 1000" role="img" aria-label="Asociația Arțarului">
         <defs>
           <filter id="im-blur" x="-25%" y="-25%" width="150%" height="150%">
-            <feGaussianBlur stdDeviation="14"/>
+            <feGaussianBlur stdDeviation="11"/>
           </filter>
           <mask id="im-mask" maskUnits="userSpaceOnUse" x="-120" y="-120" width="1240" height="1240">
-            <!-- Ordinea de pictare = ordinea de dezvăluire: cerc, literă,
-                 apoi BLOCKER-e negre statice care țin ascunse zonele
-                 frunzelor/vrejului până când formele lor albe (animate,
-                 pictate deasupra) le suprascriu. Geometrie identică
-                 blocker ↔ alb, ca finalul să fie complet dezvăluit. -->
+            <!-- Blockerele negre separă regiunile logo-ului. Fiecare este
+                 suprascris de propria formă albă animată; wordmark-ul are
+                 mască dedicată, deci nu mai poate fi decupat de vrej. -->
             <g filter="url(#im-blur)">
               <circle id="im-ring" cx="520.5" cy="364.4" r="341" fill="none" stroke="#fff" stroke-width="52" pathLength="1" transform="rotate(-90 520.5 364.4)"/>
               <rect x="196" y="52" width="600" height="676" fill="#000"/>
@@ -203,25 +203,27 @@
               <ellipse cx="315" cy="266" rx="190" ry="205" fill="#000"/>
               <ellipse cx="290" cy="521" rx="185" ry="140" fill="#000"/>
               <ellipse cx="532" cy="548" rx="100" ry="92" fill="#000"/>
-              <rect x="256" y="588" width="490" height="412" fill="#000"/>
-              <rect id="im-vine" x="256" y="588" width="490" height="412" fill="#fff"/>
+              <rect x="245" y="575" width="520" height="238" fill="#000"/>
+              <rect id="im-vine" x="245" y="575" width="520" height="238" fill="#fff"/>
               <ellipse id="im-leaf-sage" class="im-leaf" cx="315" cy="266" rx="190" ry="205" fill="#fff"/>
               <ellipse id="im-leaf-rose" class="im-leaf" cx="290" cy="521" rx="185" ry="140" fill="#fff"/>
               <ellipse id="im-leaf-olive" class="im-leaf" cx="532" cy="548" rx="100" ry="92" fill="#fff"/>
               <g id="im-dots" fill="#fff">
                 <circle cx="806" cy="205" r="32"/>
                 <circle cx="828" cy="268" r="27"/>
-                <circle cx="843" cy="332" r="23"/>
-              </g>
+                  <circle cx="843" cy="332" r="23"/>
+                </g>
+            </g>
+          </mask>
+          <mask id="im-wordmark-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="1000">
+            <g filter="url(#im-blur)">
+              <rect id="im-wordmark" x="70" y="805" width="860" height="195" fill="#fff"/>
             </g>
           </mask>
         </defs>
-        <image href="assets/img/logo-640.png" x="0" y="0" width="1000" height="1000" mask="url(#im-mask)"/>
+        <image href="assets/img/logo-1280.webp" x="0" y="0" width="1000" height="1000" preserveAspectRatio="xMidYMid meet" mask="url(#im-mask)"/>
+        <image href="assets/img/logo-640.png" x="0" y="0" width="1000" height="1000" preserveAspectRatio="xMidYMid meet" mask="url(#im-wordmark-mask)"/>
       </svg>
-      <p class="intro-word">
-        <span class="intro-word-small">Asociația</span>
-        <span class="intro-word-big">Arțarului</span>
-      </p>
     </div>
     <button type="button" id="intro-skip" class="intro-skip">Sari peste intro</button>
   </div>
@@ -495,6 +497,6 @@
   </footer>
 
   <script src="assets/js/gsap.min.js?v=3130"></script>
-  <script src="js/main.js?v=20260707"></script>
+  <script src="js/main.js?v=20260716-intro2"></script>
 </body>
 </html>
