@@ -36,6 +36,11 @@ test('eroare HTTP la Cloudflare e respinsă, nu aruncată', async () => {
   assert.strictEqual(await verificaToken('tok', 'secret', null, fetchFals(E500)), false);
 });
 
+test('excepție de rețea la Cloudflare e respinsă, nu aruncată', async () => {
+  const respinge = async () => { throw new Error('getaddrinfo ENOTFOUND'); };
+  assert.strictEqual(await verificaToken('tok', 'secret', null, respinge), false);
+});
+
 test('verificarea trimite secretul și tokenul', async () => {
   const f = fetchFals(OK);
   await verificaToken('tok', 'secret', '1.2.3.4', f);
