@@ -293,17 +293,51 @@
   var noteErr = document.getElementById('mesaj-eroare');
   var submit  = form.querySelector('.form-submit');
 
+  /* Paragraful din #mesaj-eroare primește textul specific trimis de server
+     (erori.general); păstrăm marcajul implicit ca să-l putem restaura când
+     nu avem un mesaj specific (M4). */
+  var noteErrParagraf = noteErr ? noteErr.querySelector('p') : null;
+  var noteErrHtmlImplicit = noteErrParagraf ? noteErrParagraf.innerHTML : '';
+
   var campTs = document.getElementById('form-ts');
   if (campTs) campTs.value = String(Date.now());
 
+  /* Regulile de mai jos trebuie să rămână byte-identice cu api/_validare.js
+     (mesaje + praguri + regexuri) — altfel userul vede text diferit după cum
+     îl respinge stratul client sau cel server. */
   var reguli = {
     serviciu:    function (v) { return v ? '' : 'Alege serviciul dorit.'; },
     tipEntitate: function (v) { return v ? '' : 'Alege tipul entității.'; },
-    localitate:  function (v) { return v.trim().length >= 2 ? '' : 'Adaugă localitatea.'; },
-    nume:        function (v) { return v.trim().length >= 2 ? '' : 'Te rugăm să îți scrii numele.'; },
-    telefon:     function (v) { return /^[0-9+()\s.-]{6,}$/.test(v.trim()) ? '' : 'Adaugă un număr de telefon valid.'; },
-    email:       function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Adresa de email nu pare validă.'; },
-    mesaj:       function (v) { return v.trim().length >= 10 ? '' : 'Scrie-ne câteva detalii (minim 10 caractere).'; }
+    localitate:  function (v) {
+      v = v.trim();
+      if (v.length < 2) return 'Adaugă localitatea.';
+      if (v.length > 120) return 'Localitatea este prea lungă (maxim 120 de caractere).';
+      return '';
+    },
+    nume:        function (v) {
+      v = v.trim();
+      if (v.length < 2) return 'Te rugăm să îți scrii numele.';
+      if (v.length > 120) return 'Numele este prea lung (maxim 120 de caractere).';
+      return '';
+    },
+    telefon:     function (v) {
+      v = v.trim();
+      if (!/^[0-9+()\s.-]{6,}$/.test(v)) return 'Adaugă un număr de telefon valid.';
+      if (v.length > 40) return 'Numărul de telefon este prea lung (maxim 40 de caractere).';
+      return '';
+    },
+    email:       function (v) {
+      v = v.trim();
+      if (!/^[^\s@,<>;"']+@[^\s@,<>;"']+\.[^\s@,<>;"']{2,}$/.test(v)) return 'Adresa de email nu pare validă.';
+      if (v.length > 190) return 'Adresa de email este prea lungă (maxim 190 de caractere).';
+      return '';
+    },
+    mesaj:       function (v) {
+      v = v.trim();
+      if (v.length < 10) return 'Scrie-ne câteva detalii (minim 10 caractere).';
+      if (v.length > 5000) return 'Mesajul este prea lung (maxim 5000 de caractere).';
+      return '';
+    }
   };
 
   function eroareCamp(nume, mesaj) {
@@ -386,7 +420,6 @@
       .then(function (res) {
         if (res.data && res.data.ok) {
           form.reset();
-          if (window.turnstile) window.turnstile.reset();
           arata(noteOk);
         } else {
           var erori = (res.data && res.data.erori) || {};
@@ -396,12 +429,25 @@
             eroareCamp(nume, erori[nume]);
             if (!primul) primul = form.elements[nume];
           });
+          if (noteErrParagraf) {
+            /* Textul real al serverului (captcha eșuată, trimitere eșuată) în
+               loc să fie aruncat — sau revenim la textul static implicit. */
+            if (erori.general) noteErrParagraf.textContent = erori.general;
+            else noteErrParagraf.innerHTML = noteErrHtmlImplicit;
+          }
           if (primul) primul.focus(); else arata(noteErr);
           if (erori.general) arata(noteErr);
         }
       })
-      .catch(function () { arata(noteErr); })
+      .catch(function () {
+        if (noteErrParagraf) noteErrParagraf.innerHTML = noteErrHtmlImplicit;
+        arata(noteErr);
+      })
       .finally(function () {
+        /* Rulează la orice rezultat: dacă trimiterea a eșuat, tokenul deja
+           consumat trebuie resetat, altfel userul rămâne blocat cu
+           timeout-or-duplicate până reîncarcă pagina (I4). */
+        if (window.turnstile) window.turnstile.reset();
         submit.removeAttribute('aria-busy');
         if (labelEl) labelEl.textContent = labelText;
       });
