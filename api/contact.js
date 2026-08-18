@@ -92,10 +92,17 @@ async function handler(req, res, deps) {
     return;
   }
 
-  try {
-    await trimite(emailConfirmare(c, cfg), env.RESEND_API_KEY, null);
-  } catch (e) {
-    log(`[contact] emailul de confirmare a eșuat, notificarea a plecat: ${e.message}`);
+  if (c.areJs) {
+    try {
+      await trimite(emailConfirmare(c, cfg), env.RESEND_API_KEY, null);
+    } catch (e) {
+      log(`[contact] emailul de confirmare a eșuat, notificarea a plecat: ${e.message}`);
+    }
+  } else {
+    // Ruta fără JS nu trece prin Turnstile — trimiterea unui email de confirmare
+    // cu conținut controlat de expeditor, la o adresă controlată de expeditor,
+    // ar face din domeniul nostru un releu deschis. Notificarea internă e suficientă.
+    log('[contact] confirmare săltată — trimitere fără JS, necaptcha; doar notificarea internă a plecat');
   }
 
   raspunde(req, res, true, {}, c.redirect);

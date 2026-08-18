@@ -97,14 +97,25 @@ test('token Turnstile invalid e respins când JS e activ', async () => {
   assert.strictEqual(d.trimise.length, 0);
 });
 
-test('fără JS, captcha nu se cere și trimiterea reușește', async () => {
+test('fără JS, captcha nu se cere și trimiterea reușește, dar pleacă DOAR notificarea internă la MAIL_TO — nu și confirmarea către expeditor (I1)', async () => {
   const res = raspunsFals();
   const { ts, 'cf-turnstile-response': _t, ...faraJs } = CORP_BUN;
   const d = deps({ verificaToken: async () => false });
   await handler(cerereFalsa({ ...faraJs, redirect: '/servicii/x.html' }), res, d);
   assert.strictEqual(res._status, 303);
   assert.strictEqual(res._antete.Location, '/servicii/x.html#mesaj-trimis');
+  assert.strictEqual(d.trimise.length, 1);
+  assert.strictEqual(d.trimise[0].to, ENV.MAIL_TO);
+});
+
+test('cu JS (captcha validă) pleacă atât notificarea internă cât și confirmarea către expeditor (I1)', async () => {
+  const res = raspunsFals();
+  const d = deps();
+  await handler(cerereFalsa(CORP_BUN, { 'x-requested-with': 'fetch' }), res, d);
+  assert.strictEqual(res._corp.ok, true);
   assert.strictEqual(d.trimise.length, 2);
+  assert.strictEqual(d.trimise[0].to, ENV.MAIL_TO);
+  assert.strictEqual(d.trimise[1].to, CORP_BUN.email);
 });
 
 test('confirmarea eșuată nu strică succesul', async () => {
