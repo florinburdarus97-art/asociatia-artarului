@@ -23,9 +23,10 @@ function oLinie(v) {
 }
 
 function redirectSigur(v) {
-  const s = String(v == null ? '' : v).replace(/[\r\n]+/g, '').trim();
+  const s = String(v == null ? '' : v).replace(/[\r\n\t]+/g, '').trim();
   if (!s.startsWith('/')) return '/contact.html';
   if (s.startsWith('//')) return '/contact.html';
+  if (s.includes('\\')) return '/contact.html';   // browserele normalizează \ în / (CWE-601)
   if (s.includes('://')) return '/contact.html';
   return s;
 }

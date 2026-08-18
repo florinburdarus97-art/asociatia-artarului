@@ -83,3 +83,9 @@ test('redirectSigur respinge absolut, protocol-relativ și schemă', () => {
   assert.strictEqual(redirectSigur('javascript:alert(1)'), '/contact.html');
   assert.strictEqual(redirectSigur(''), '/contact.html');
 });
+
+test('redirectSigur respinge backslash — browserele îl normalizează în /', () => {
+  assert.strictEqual(redirectSigur('/\\rau.ro'), '/contact.html');
+  assert.strictEqual(redirectSigur('/\\\\rau.ro'), '/contact.html');
+  assert.strictEqual(redirectSigur('/servicii\\..\\x'), '/contact.html');
+});
