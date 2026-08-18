@@ -293,11 +293,17 @@
   var noteErr = document.getElementById('mesaj-eroare');
   var submit  = form.querySelector('.form-submit');
 
+  var campTs = document.getElementById('form-ts');
+  if (campTs) campTs.value = String(Date.now());
+
   var reguli = {
-    nume:    function (v) { return v.trim().length >= 2 ? '' : 'Te rugăm să îți scrii numele.'; },
-    telefon: function (v) { return /^[0-9+()\s.-]{6,}$/.test(v.trim()) ? '' : 'Adaugă un număr de telefon valid.'; },
-    email:   function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Adresa de email nu pare validă.'; },
-    mesaj:   function (v) { return v.trim().length >= 10 ? '' : 'Scrie-ne câteva detalii (minim 10 caractere).'; }
+    serviciu:    function (v) { return v ? '' : 'Alege serviciul dorit.'; },
+    tipEntitate: function (v) { return v ? '' : 'Alege tipul entității.'; },
+    localitate:  function (v) { return v.trim().length >= 2 ? '' : 'Adaugă localitatea.'; },
+    nume:        function (v) { return v.trim().length >= 2 ? '' : 'Te rugăm să îți scrii numele.'; },
+    telefon:     function (v) { return /^[0-9+()\s.-]{6,}$/.test(v.trim()) ? '' : 'Adaugă un număr de telefon valid.'; },
+    email:       function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Adresa de email nu pare validă.'; },
+    mesaj:       function (v) { return v.trim().length >= 10 ? '' : 'Scrie-ne câteva detalii (minim 10 caractere).'; }
   };
 
   function eroareCamp(nume, mesaj) {
@@ -337,12 +343,22 @@
 
   function valideaza() {
     var primulInvalid = null;
+
     Object.keys(reguli).forEach(function (nume) {
       var input = form.elements[nume];
-      var mesaj = reguli[nume](input ? input.value : '');
+      if (!input) return;                 // câmp absent în varianta curentă a formularului
+      var mesaj = reguli[nume](input.value);
       eroareCamp(nume, mesaj);
       if (mesaj && !primulInvalid) primulInvalid = input;
     });
+
+    var bifa = form.elements.consimtamant;
+    if (bifa) {
+      var mesajBifa = bifa.checked ? '' : 'Bifează acordul pentru a putea trimite.';
+      eroareCamp('consimtamant', mesajBifa);
+      if (mesajBifa && !primulInvalid) primulInvalid = bifa;
+    }
+
     if (primulInvalid) primulInvalid.focus();
     return !primulInvalid;
   }
@@ -359,13 +375,18 @@
 
     fetch(form.action, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'X-Requested-With': 'fetch', 'Accept': 'application/json' }
+      body: new URLSearchParams(new FormData(form)),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'X-Requested-With': 'fetch',
+        'Accept': 'application/json'
+      }
     })
       .then(function (r) { return r.json().then(function (d) { return { status: r.status, data: d }; }); })
       .then(function (res) {
         if (res.data && res.data.ok) {
           form.reset();
+          if (window.turnstile) window.turnstile.reset();
           arata(noteOk);
         } else {
           var erori = (res.data && res.data.erori) || {};

@@ -2129,3 +2129,21 @@ img.statement-leaf {
   .press-poster-link:hover { transform: none; }
   .press-dl:hover .link-ico { transform: none; }
 }
+
+/* ---------- 46. Formular: bifă de consimțământ (varianta „cerere") ---------- */
+.field-check { gap: 0.5rem; }
+.check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: var(--text-sm);
+  color: var(--charcoal-soft);
+  cursor: pointer;
+}
+.check-label input[type="checkbox"] {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15em;
+  accent-color: var(--olive);
+}
