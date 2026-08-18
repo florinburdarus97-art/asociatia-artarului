@@ -27,17 +27,20 @@ export function slugValid(s) {
 }
 
 export function injecteazaIntreMarcaje(text, nume, continutNou) {
-  const start = new RegExp('<!--\\s*BEGIN:' + nume + '\\b[^>]*-->');
-  const stop = new RegExp('<!--\\s*END:' + nume + '\\s*-->');
+  const numeEsc = String(nume).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const start = new RegExp('<!--\\s*BEGIN:' + numeEsc + '\\b[^>]*-->');
+  const stop = new RegExp('<!--\\s*END:' + numeEsc + '\\s*-->');
 
   const nrStart = (text.match(new RegExp(start.source, 'g')) || []).length;
   const nrStop = (text.match(new RegExp(stop.source, 'g')) || []).length;
 
   if (nrStart === 0 || nrStop === 0) {
-    throw new Error(`Markerul ${nume} lipsește din fișier.`);
+    const care = nrStart === 0 && nrStop === 0 ? 'BEGIN și END'
+               : nrStart === 0 ? 'BEGIN' : 'END';
+    throw new Error(`Markerul ${care}:${nume} lipsește din fișier.`);
   }
   if (nrStart > 1 || nrStop > 1) {
-    throw new Error(`Markerul ${nume} apare de două ori; regenerarea ar fi ambiguă.`);
+    throw new Error(`Markerul ${nume} apare de mai multe ori (BEGIN ×${nrStart}, END ×${nrStop}); regenerarea ar fi ambiguă.`);
   }
 
   const iStart = text.search(start);
@@ -56,8 +59,24 @@ export function injecteazaIntreMarcaje(text, nume, continutNou) {
    Nu atinge: căile absolute (/…), URL-urile externe (http…, //…, mailto:, tel:) și ancorele (#…). */
 export function prefixeaza(html, prefix) {
   if (!prefix) return html;
-  return html.replace(/\b(src|href)="([^"]+)"/g, (tot, atr, val) => {
-    if (/^(\/|#|https?:|\/\/|mailto:|tel:|data:)/.test(val)) return tot;
-    return `${atr}="${prefix}${val}"`;
+
+  const relativa = (v) => !/^(\/|#|https?:|\/\/|mailto:|tel:|data:)/.test(v);
+
+  // src și href poartă o singură cale.
+  // `\bsrc="` nu se potrivește în `srcset="`, deci nu există dublă procesare.
+  let out = html.replace(/\b(src|href)="([^"]+)"/g, (tot, atr, val) =>
+    relativa(val) ? `${atr}="${prefix}${val}"` : tot);
+
+  // srcset poartă o listă „cale descriptor", separate prin virgulă.
+  out = out.replace(/\bsrcset="([^"]+)"/g, (tot, val) => {
+    const lista = val.split(',').map((intrare) => {
+      const t = intrare.trim();
+      if (!t) return t;
+      const [cale, ...descriptor] = t.split(/\s+/);
+      return relativa(cale) ? [prefix + cale, ...descriptor].join(' ') : t;
+    });
+    return `srcset="${lista.join(', ')}"`;
   });
+
+  return out;
 }

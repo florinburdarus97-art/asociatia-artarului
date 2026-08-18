@@ -36,7 +36,20 @@ test('injecteazaIntreMarcaje aruncă dacă markerul lipsește', () => {
 
 test('injecteazaIntreMarcaje aruncă la marker duplicat', () => {
   const dublu = CU_MARCAJE + '\n' + CU_MARCAJE;
-  assert.throws(() => G.injecteazaIntreMarcaje(dublu, 'carduri-servicii', 'x'), /de două ori|duplicat/i);
+  assert.throws(() => G.injecteazaIntreMarcaje(dublu, 'carduri-servicii', 'x'), /de mai multe ori/);
+});
+
+test('prefixeaza rescrie srcset, listă cu descriptori', () => {
+  const html = '<img src="assets/img/logo-96.png" srcset="assets/img/logo-96.png 1x, assets/img/logo-192.png 2x">';
+  const out = G.prefixeaza(html, '../');
+  assert.ok(out.includes('src="../assets/img/logo-96.png"'));
+  assert.ok(out.includes('srcset="../assets/img/logo-96.png 1x, ../assets/img/logo-192.png 2x"'),
+    'srcset neprefixat: imaginile retina ar da 404 în subfolder');
+});
+
+test('prefixeaza nu atinge srcset absolut sau extern', () => {
+  const html = '<img srcset="/assets/a.webp 1x, https://cdn.ro/b.webp 2x">';
+  assert.strictEqual(G.prefixeaza(html, '../'), html);
 });
 
 test('prefixeaza rescrie căile relative, nu și pe cele absolute sau externe', () => {
