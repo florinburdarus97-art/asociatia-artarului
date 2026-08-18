@@ -13,6 +13,10 @@
     <priority>0.9</priority>
   </url>
   <!-- BEGIN:servicii -->
+  <url><loc>https://artarului.ro/servicii/acreditare-servicii-sociale.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://artarului.ro/servicii/autorizare-anc-men.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://artarului.ro/servicii/formare-anc.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://artarului.ro/servicii/fonduri-nerambursabile.html</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://artarului.ro/servicii/strategii-dezvoltare-locala.html</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://artarului.ro/servicii/documentatie-recrutare.html</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://artarului.ro/servicii/implementare-management-proiecte.html</loc><changefreq>monthly</changefreq></url>

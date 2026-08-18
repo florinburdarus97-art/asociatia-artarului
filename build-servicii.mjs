@@ -82,16 +82,17 @@ export function prefixeaza(html, prefix) {
 }
 
 export function hrefCard(s) {
-  if (s.stare === 'pagina') return `servicii/${s.slug}.html`;
-  if (s.stare === 'ancora') return `servicii.html#${s.slug}`;
-  return null;
+  return s.stare === 'in-lucru' ? null : `servicii/${s.slug}.html`;
 }
 
 export function randCard(s) {
   const href = hrefCard(s);
+  const eticheta = s.eticheta
+    ? `\n          <span class="svc-eticheta">${esc(s.eticheta)}</span>`
+    : '';
   const corp = `
           <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
-          <h3 class="svc-title">${esc(s.titluCard)}</h3>
+          <h3 class="svc-title">${esc(s.titluCard)}</h3>${eticheta}
           <p class="svc-text">${esc(s.lead)}</p>`;
 
   if (!href) {
@@ -116,12 +117,13 @@ export function randGrila(manifest) {
       .map(randCard)
       .join('\n');
 
-    return `      <section class="svc-family" aria-labelledby="fam-${esc(f.id)}">
+    return `      <section class="svc-family" aria-labelledby="fam-${esc(f.id)}" data-familie="${esc(f.id)}">
+        <img class="svc-family-leaf" src="assets/img/leaf-sage-480.webp" width="260" height="241" alt="" loading="lazy" aria-hidden="true">
         <header class="svc-family-head" data-reveal>
           <h2 id="fam-${esc(f.id)}" class="svc-family-title">${esc(f.titlu)}</h2>
           <p class="svc-family-lead">${esc(f.lead)}</p>
         </header>
-        <div class="svc-grid">
+        <div class="svc-index">
 ${carduri}
         </div>
       </section>`;

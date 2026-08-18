@@ -49,11 +49,17 @@ test('stările sunt din mulțimea permisă', () => {
   }
 });
 
-test('repartiția stărilor e cea din amendamentul specului', () => {
+test('repartiția stărilor: toate serviciile au pagină proprie', () => {
   const numar = (st) => servicii.filter((s) => s.stare === st).length;
-  assert.strictEqual(numar('pagina'), 6);
-  assert.strictEqual(numar('ancora'), 3);
-  assert.strictEqual(numar('in-lucru'), 1);
+  assert.strictEqual(numar('pagina'), 10);
+  assert.strictEqual(numar('ancora'), 0, 'starea ancora a fost eliminată din design');
+});
+
+test('eticheta, când există, e un text scurt', () => {
+  for (const s of servicii.filter((x) => x.eticheta !== undefined)) {
+    assert.ok(typeof s.eticheta === 'string' && s.eticheta.trim().length > 0 && s.eticheta.length <= 20,
+      `${s.slug}: eticheta trebuie să fie text scurt`);
+  }
 });
 
 test('ordinea e unică și acoperă 1..10', () => {
@@ -94,14 +100,6 @@ test('identitate-vizuala-promovare are livrabilele despărțite în două grupur
   assert.strictEqual(s.livrabile.length, 2);
   for (const g of s.livrabile) {
     assert.ok(g.titlu && g.titlu.trim().length > 0, 'grupul trebuie titrat');
-  }
-});
-
-test('serviciile pe ancora sau in-lucru nu poartă conținut de pagină', () => {
-  for (const s of servicii.filter((x) => x.stare !== 'pagina')) {
-    const gol = (v) => v === undefined || (Array.isArray(v) && v.length === 0);
-    assert.ok(gol(s.context), `${s.slug}: are context dar nu are pagină`);
-    assert.ok(gol(s.livrabile), `${s.slug}: are livrabile dar nu are pagină`);
   }
 });
 

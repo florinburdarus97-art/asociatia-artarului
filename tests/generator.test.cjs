@@ -97,10 +97,25 @@ test('incarcaManifest citește manifestul real și îl întoarce parsat', () => 
   assert.strictEqual(m.familii.length, 4);
 });
 
-test('hrefCard trimite fiecare stare unde trebuie', () => {
+test('hrefCard trimite orice serviciu la pagina lui', () => {
   assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'pagina' }), 'servicii/x.html');
-  assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'ancora' }), 'servicii.html#x');
   assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'in-lucru' }), null);
+});
+
+test('cardul cu etichetă o afișează, dar rămâne linkat', () => {
+  const html = G.randCard({ slug: 'formare-anc', stare: 'pagina', icon: 'i-medal',
+    titluCard: 'Formare ANC', lead: 'x', eticheta: 'În pregătire' });
+  assert.ok(html.includes('svc-eticheta'));
+  assert.ok(html.includes('În pregătire'));
+  assert.ok(html.includes('href="servicii/formare-anc.html"'), 'eticheta nu suspendă linkul');
+});
+
+test('grila emite containerul de index și marchează familia', () => {
+  const html = G.randGrila(G.incarcaManifest());
+  assert.ok(html.includes('svc-index'), 'lipsește containerul de index');
+  for (const f of G.incarcaManifest().familii) {
+    assert.ok(html.includes(`data-familie="${f.id}"`), `lipsește marcajul familiei ${f.id}`);
+  }
 });
 
 test('cardul pe stare pagina are link, săgeată și overlay clickabil', () => {

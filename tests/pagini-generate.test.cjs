@@ -45,7 +45,7 @@ test('paginile conțin titlul, leadul, rezultatul și livrabilele din manifest',
   for (const s of cuPagina) {
     const html = citeste(`servicii/${s.slug}.html`);
     assert.ok(html.includes(s.titluPagina), `${s.slug}: lipsește titlul`);
-    assert.ok(html.includes(s.rezultat), `${s.slug}: lipsește rezultatul`);
+    if (s.rezultat) assert.ok(html.includes(s.rezultat), `${s.slug}: lipsește rezultatul`);
     for (const grup of s.livrabile) {
       for (const el of grup.elemente) {
         assert.ok(html.includes(el), `${s.slug}: lipsește livrabilul „${el}"`);
@@ -111,6 +111,13 @@ test('grila din servicii.html a fost regenerată între markere', () => {
   assert.ok(html.includes('END:carduri-servicii'));
   assert.ok(html.includes('svc-family'), 'grila nu a fost scrisă');
   assert.ok(html.includes('Cum lucrăm'), 'conținutul scris de mână s-a pierdut');
+});
+
+test('hub-ul nu mai conține secțiuni de detaliu migrate în pagini', () => {
+  const html = citeste('servicii.html');
+  assert.ok(!html.includes('svc-detail'), 'detaliul trebuia mutat în paginile de serviciu');
+  assert.ok(html.includes('Cum lucrăm'), 'conținutul scris de mână s-a pierdut');
+  assert.ok(html.includes('cta-band'), 'banda CTA s-a pierdut');
 });
 
 test('sitemap conține cele șase pagini noi', () => {

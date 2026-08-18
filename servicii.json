@@ -9,38 +9,141 @@
     {
       "slug": "acreditare-servicii-sociale",
       "familie": "acreditari",
-      "stare": "ancora",
+      "stare": "pagina",
       "ordine": 1,
       "icon": "i-certificate",
       "titluCard": "Consultanță pentru acreditarea serviciilor sociale",
-      "lead": "Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului."
+      "titluPagina": "Consultanță pentru acreditarea serviciilor sociale",
+      "lead": "Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului.",
+      "rezultat": "Statutul de furnizor acreditat de servicii sociale.",
+      "context": [
+        "Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "Evaluare inițială completă",
+            "Întocmirea documentației",
+            "Asistență în relația cu autoritățile",
+            "Suport continuu pentru menținerea conformității"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [
+        { "titlu": "Evaluare inițială completă", "text": null },
+        { "titlu": "Întocmirea documentației", "text": null },
+        { "titlu": "Asistență în relația cu autoritățile", "text": null },
+        { "titlu": "Suport continuu pentru menținerea conformității", "text": null }
+      ],
+      "faq": [],
+      "seo": {
+        "title": "Consultanță pentru acreditarea serviciilor sociale | Asociația Arțarului",
+        "description": "Consultanță completă pentru acreditarea serviciilor sociale: documentație, asistență în relația cu autoritățile și suport pentru UAT-uri și ONG-uri."
+      }
     },
     {
       "slug": "autorizare-anc-men",
       "familie": "acreditari",
-      "stare": "ancora",
+      "stare": "pagina",
       "ordine": 2,
       "icon": "i-graduation-cap",
       "titluCard": "Autorizare cursuri ANC și acreditare MEN",
-      "lead": "Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate."
+      "titluPagina": "Autorizare cursuri ANC și acreditare MEN",
+      "lead": "Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate.",
+      "context": [
+        "Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "Analiză preliminară de eligibilitate",
+            "Pregătirea dosarului, cu suport de curs și anexe",
+            "Sprijin în comunicarea cu ANC",
+            "Asistență la inspecții și evaluări"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [
+        { "titlu": "Analiză preliminară de eligibilitate", "text": null },
+        { "titlu": "Pregătirea dosarului, cu suport de curs și anexe", "text": null },
+        { "titlu": "Sprijin în comunicarea cu ANC", "text": null },
+        { "titlu": "Asistență la inspecții și evaluări", "text": null }
+      ],
+      "faq": [],
+      "seo": {
+        "title": "Autorizare cursuri ANC și acreditare MEN | Asociația Arțarului",
+        "description": "Pregătim dosarul de autorizare a cursurilor ANC și acreditare MEN, cu sprijin până la inspecțiile finale, pentru diplome recunoscute național și european."
+      }
     },
     {
       "slug": "formare-anc",
       "familie": "acreditari",
-      "stare": "in-lucru",
+      "stare": "pagina",
       "ordine": 3,
       "icon": "i-medal",
+      "eticheta": "În pregătire",
       "titluCard": "Formare profesională autorizată ANC",
-      "lead": "Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului."
+      "titluPagina": "Formare profesională autorizată ANC",
+      "lead": "Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului.",
+      "context": [
+        "Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "Conținut actualizat",
+            "Formatori experți",
+            "Certificare ANC",
+            "Sprijin de la înscriere la diplomă"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Formare profesională autorizată ANC | Asociația Arțarului",
+        "description": "Programe de formare profesională autorizate ANC, cu sprijin complet pentru cursanți pe toată durata programului."
+      }
     },
     {
       "slug": "fonduri-nerambursabile",
       "familie": "finantare",
-      "stare": "ancora",
+      "stare": "pagina",
       "ordine": 4,
       "icon": "i-hand-coins",
       "titluCard": "Consultanță în accesarea fondurilor nerambursabile",
-      "lead": "Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului."
+      "titluPagina": "Consultanță în accesarea fondurilor nerambursabile",
+      "lead": "Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului.",
+      "context": [
+        "Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "Identificarea oportunităților de finanțare",
+            "Elaborarea proiectelor",
+            "Sprijin complet în implementare"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [
+        { "titlu": "Identificarea oportunităților de finanțare", "text": null },
+        { "titlu": "Elaborarea proiectelor", "text": null },
+        { "titlu": "Sprijin complet în implementare", "text": null }
+      ],
+      "faq": [],
+      "seo": {
+        "title": "Consultanță în accesarea fondurilor nerambursabile | Asociația Arțarului",
+        "description": "Consultanță în accesarea fondurilor nerambursabile: identificăm sursele de finanțare, inclusiv de la bugetul de stat, și te însoțim pe tot proiectul."
+      }
     },
     {
       "slug": "strategii-dezvoltare-locala",
