@@ -514,7 +514,7 @@
 
   /* Petale: frunza roz reală din logo, în miniatură, plutind în derivă */
   var petalImg = new Image();
-  petalImg.src = 'assets/img/leaf-rose-480.webp';
+  petalImg.src = '/assets/img/leaf-rose-480.webp';
   var petals = [];
   var NP = small ? 4 : 7;
   function resetPetal(p, first) {
