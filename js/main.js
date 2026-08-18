@@ -280,8 +280,8 @@
 /* ==========================================================================
    S5 - formular de contact: validare client + trimitere asincronă (fetch).
    Progressive enhancement: fără JS, formularul face POST normal către
-   contact.php, care redirecționează la #mesaj-trimis / #mesaj-eroare
-   (afișate cu :target). Cu JS, rămânem pe pagină și dăm feedback inline.
+   /api/contact, care răspunde cu 303 redirect la originea cererii cu
+   #mesaj-trimis / #mesaj-eroare. Cu JS, rămânem pe pagină și dăm feedback inline.
    ========================================================================== */
 (function () {
   'use strict';

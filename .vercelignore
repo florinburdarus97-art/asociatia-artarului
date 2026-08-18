@@ -1,0 +1,5 @@
+tests/
+partials/
+.superpowers/
+*.md
+.DS_Store
