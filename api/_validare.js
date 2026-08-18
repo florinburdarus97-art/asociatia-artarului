@@ -23,11 +23,13 @@ function oLinie(v) {
 }
 
 function redirectSigur(v) {
-  const s = String(v == null ? '' : v).replace(/[\r\n\t]+/g, '').trim();
+  let s = String(v == null ? '' : v).replace(/[\r\n\t]+/g, '').trim();
   if (!s.startsWith('/')) return '/contact.html';
   if (s.startsWith('//')) return '/contact.html';
   if (s.includes('\\')) return '/contact.html';   // browserele normalizează \ în / (CWE-601)
   if (s.includes('://')) return '/contact.html';
+  s = s.split('#')[0];   // fragmentul nu are ce căuta în Location — ar dubla #mesaj-trimis
+  if (!/^\/[\x21-\x7e]*$/.test(s)) return '/contact.html';   // doar ASCII imprimabil — evită ERR_INVALID_CHAR pe Location
   return s;
 }
 
@@ -54,9 +56,13 @@ function valideaza(date, optiuni) {
   const mesaj = String(date.mesaj == null ? '' : date.mesaj).trim();
 
   if (nume.length < 2) erori.nume = 'Te rugăm să îți scrii numele.';
+  else if (nume.length > 120) erori.nume = 'Numele este prea lung (maxim 120 de caractere).';
   if (!/^[0-9+()\s.-]{6,}$/.test(telefon)) erori.telefon = 'Adaugă un număr de telefon valid.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) erori.email = 'Adresa de email nu pare validă.';
+  else if (telefon.length > 40) erori.telefon = 'Numărul de telefon este prea lung (maxim 40 de caractere).';
+  if (!/^[^\s@,<>;"']+@[^\s@,<>;"']+\.[^\s@,<>;"']{2,}$/.test(email)) erori.email = 'Adresa de email nu pare validă.';
+  else if (email.length > 190) erori.email = 'Adresa de email este prea lungă (maxim 190 de caractere).';
   if (mesaj.length < 10) erori.mesaj = 'Scrie-ne câteva detalii (minim 10 caractere).';
+  else if (mesaj.length > 5000) erori.mesaj = 'Mesajul este prea lung (maxim 5000 de caractere).';
 
   let serviciu = null;
   let tipEntitate = null;
@@ -71,6 +77,7 @@ function valideaza(date, optiuni) {
 
     localitate = oLinie(date.localitate);
     if (localitate.length < 2) erori.localitate = 'Adaugă localitatea.';
+    else if (localitate.length > 120) erori.localitate = 'Localitatea este prea lungă (maxim 120 de caractere).';
 
     if (oLinie(date.consimtamant) !== 'da') {
       erori.consimtamant = 'Bifează acordul pentru a putea trimite.';

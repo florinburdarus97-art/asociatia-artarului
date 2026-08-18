@@ -48,7 +48,7 @@ function emailNotificare(c, cfg) {
 
 function emailConfirmare(c, cfg) {
   const ce = c.tip === 'cerere'
-    ? `cererea ta pentru „${c.titluServiciu}"`
+    ? `cererea ta pentru „${c.titluServiciu}”`
     : 'mesajul tău';
 
   const text = [
@@ -74,7 +74,7 @@ function emailConfirmare(c, cfg) {
 
   const html = `<div style="font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4A4A4A">
   <p>Bună, ${escapeHtml(c.nume)},</p>
-  <p>Îți mulțumim — am primit ${escapeHtml(c.tip === 'cerere' ? `cererea ta pentru „${c.titluServiciu}"` : 'mesajul tău')}. Revenim cu un răspuns în cel mult două zile lucrătoare.</p>
+  <p>Îți mulțumim — am primit ${escapeHtml(c.tip === 'cerere' ? `cererea ta pentru „${c.titluServiciu}”` : 'mesajul tău')}. Revenim cu un răspuns în cel mult două zile lucrătoare.</p>
   <p><strong>Ce am primit de la tine</strong><br>
   Telefon: ${escapeHtml(c.telefon)}<br>
   Email: ${escapeHtml(c.email)}${c.tip === 'cerere' ? `<br>Entitate: ${escapeHtml(c.tipEntitate)}<br>Localitate: ${escapeHtml(c.localitate)}` : ''}</p>

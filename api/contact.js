@@ -7,6 +7,7 @@ const { trimite: trimiteReal } = require('./_mailer.js');
 
 function citesteCorp(req) {
   const b = req.body;
+  if (Buffer.isBuffer(b)) return Object.fromEntries(new URLSearchParams(b.toString('utf8')));
   if (b && typeof b === 'object') return b;
   if (typeof b === 'string') return Object.fromEntries(new URLSearchParams(b));
   return {};
@@ -100,5 +101,21 @@ async function handler(req, res, deps) {
   raspunde(req, res, true, {}, c.redirect);
 }
 
-module.exports = (req, res) => handler(req, res, {});
+async function handlerSigur(req, res, deps) {
+  try {
+    await handler(req, res, deps || {});
+  } catch (e) {
+    const log = (deps && deps.log) || console.error;
+    log(`[contact] eroare neprevăzută: ${e.message}`);
+    try {
+      raspunde(req, res, false, { general: 'A apărut o eroare neașteptată. Încearcă din nou sau sună-ne direct.' }, '/contact.html', 500);
+    } catch (_e2) {
+      // ultimul refugiu, dacă până și raspunde() eșuează
+      try { res.status(500); res.end(); } catch (_e3) { /* nimic altceva de făcut */ }
+    }
+  }
+}
+
+module.exports = (req, res, deps) => handlerSigur(req, res, deps);
 module.exports.handler = handler;
+module.exports.handlerSigur = handlerSigur;

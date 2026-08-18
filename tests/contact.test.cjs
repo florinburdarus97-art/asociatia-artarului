@@ -1,7 +1,8 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert');
-const { handler } = require('../api/contact.js');
+const contactApi = require('../api/contact.js');
+const { handler } = contactApi;
 
 const ACUM = 1_800_000_000_000;
 
@@ -141,6 +142,39 @@ test('redirectul extern e ignorat la eroare', async () => {
   const res = raspunsFals();
   const { ts, ...faraJs } = CORP_BUN;
   await handler(cerereFalsa({ ...faraJs, email: 'rau', redirect: 'https://rau.ro' }), res, deps());
+  assert.strictEqual(res._status, 303);
+  assert.strictEqual(res._antete.Location, '/contact.html#mesaj-eroare');
+});
+
+test('corpul primit ca Buffer e parsat ca urlencoded UTF-8 (M1)', async () => {
+  const res = raspunsFals();
+  const d = deps();
+  const text = new URLSearchParams(CORP_BUN).toString();
+  const buf = Buffer.from(text, 'utf8');
+  await handler({ method: 'POST', body: buf, headers: { 'x-requested-with': 'fetch' } }, res, d);
+  assert.strictEqual(res._status, 200);
+  assert.deepStrictEqual(res._corp, { ok: true });
+});
+
+test('un crash neprevăzut nu ajunge brut la vizitator — AJAX primește 500 JSON (I3)', async () => {
+  const res = raspunsFals();
+  await contactApi(
+    cerereFalsa(CORP_BUN, { 'x-requested-with': 'fetch' }),
+    res,
+    { acum: () => { throw new Error('boom neprevăzut'); }, env: ENV, log: () => {} }
+  );
+  assert.strictEqual(res._status, 500);
+  assert.strictEqual(res._corp.ok, false);
+  assert.ok(res._corp.erori.general);
+});
+
+test('un crash neprevăzut nu ajunge brut la vizitator — non-AJAX primește 303 la /contact.html#mesaj-eroare (I3)', async () => {
+  const res = raspunsFals();
+  await contactApi(
+    cerereFalsa(CORP_BUN, {}),
+    res,
+    { acum: () => { throw new Error('boom neprevăzut'); }, env: ENV, log: () => {} }
+  );
   assert.strictEqual(res._status, 303);
   assert.strictEqual(res._antete.Location, '/contact.html#mesaj-eroare');
 });

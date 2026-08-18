@@ -77,3 +77,11 @@ test('confirmarea conține telefoanele de contact', () => {
   assert.ok(m.text.includes('0734 032 624'));
   assert.ok(m.text.includes('0756 576 933'));
 });
+
+test('ghilimelele românești din confirmarea de tip cerere se închid cu „ ” (U+201D), nu cu ghilimeaua dreaptă (M2)', () => {
+  const m = emailConfirmare(cerere, CFG);
+  assert.ok(m.text.includes('„Acreditarea serviciilor sociale”'));
+  assert.ok(m.html.includes('„Acreditarea serviciilor sociale”'));
+  assert.ok(!m.text.includes('sociale"'));
+  assert.ok(!m.html.includes('sociale"'));
+});
