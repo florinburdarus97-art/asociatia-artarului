@@ -1,0 +1,288 @@
+{
+  "familii": [
+    { "id": "acreditari", "titlu": "Acreditări și autorizări", "lead": "Statutul care îți deschide finanțările și dreptul de a livra." },
+    { "id": "finantare", "titlu": "Finanțare", "lead": "De la direcția de dezvoltare până la contractul de finanțare semnat." },
+    { "id": "implementare", "titlu": "Implementare", "lead": "Sprijin practic după semnătură, cât timp proiectul chiar se derulează." },
+    { "id": "comunicare", "titlu": "Comunicare și tehnologie", "lead": "Rezultatele proiectului, făcute vizibile. Procesele, făcute mai simple." }
+  ],
+  "servicii": [
+    {
+      "slug": "acreditare-servicii-sociale",
+      "familie": "acreditari",
+      "stare": "ancora",
+      "ordine": 1,
+      "icon": "i-certificate",
+      "titluCard": "Consultanță pentru acreditarea serviciilor sociale",
+      "lead": "Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului."
+    },
+    {
+      "slug": "autorizare-anc-men",
+      "familie": "acreditari",
+      "stare": "ancora",
+      "ordine": 2,
+      "icon": "i-graduation-cap",
+      "titluCard": "Autorizare cursuri ANC și acreditare MEN",
+      "lead": "Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate."
+    },
+    {
+      "slug": "formare-anc",
+      "familie": "acreditari",
+      "stare": "in-lucru",
+      "ordine": 3,
+      "icon": "i-medal",
+      "titluCard": "Formare profesională autorizată ANC",
+      "lead": "Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului."
+    },
+    {
+      "slug": "fonduri-nerambursabile",
+      "familie": "finantare",
+      "stare": "ancora",
+      "ordine": 4,
+      "icon": "i-hand-coins",
+      "titluCard": "Consultanță în accesarea fondurilor nerambursabile",
+      "lead": "Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului."
+    },
+    {
+      "slug": "strategii-dezvoltare-locala",
+      "familie": "finantare",
+      "stare": "pagina",
+      "ordine": 5,
+      "icon": "i-map-pin",
+      "titluCard": "Strategii de dezvoltare locală",
+      "titluPagina": "Strategii de dezvoltare locală",
+      "lead": "O comunitate care își cunoaște prioritățile poate transforma nevoile locale în direcții concrete de dezvoltare.",
+      "rezultat": "Asociația Arțarului – de la nevoile comunității la o direcție clară de dezvoltare.",
+      "context": [
+        "Asociația Arțarului oferă servicii specializate pentru elaborarea și actualizarea strategiilor de dezvoltare locală, adaptate realităților economice, sociale și teritoriale ale fiecărei comunități.",
+        "Procesul pornește de la o analiză fundamentată a situației existente și urmărește definirea unei viziuni clare de dezvoltare, a obiectivelor strategice și a unui portofoliu realist de proiecte și investiții.",
+        "Punem accent pe strategii aplicabile, construite în jurul nevoilor reale ale comunității și al proiectelor care pot genera dezvoltare, nu doar pe îndeplinirea unei cerințe administrative."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "analiza profilului socio-economic și teritorial al comunității",
+            "identificarea nevoilor, problemelor și potențialului local de dezvoltare",
+            "analiza SWOT și stabilirea direcțiilor strategice",
+            "definirea obiectivelor, priorităților și măsurilor de intervenție",
+            "identificarea și prioritizarea proiectelor de investiții",
+            "corelarea strategiei cu oportunitățile și sursele de finanțare disponibile",
+            "elaborarea planului de acțiune și a mecanismelor de monitorizare",
+            "sprijin în procesul de consultare publică și definitivare a documentului strategic",
+            "actualizarea strategiilor existente în funcție de noile priorități și oportunități de dezvoltare"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Strategii de dezvoltare locală | Asociația Arțarului",
+        "description": "Elaborăm și actualizăm strategii de dezvoltare locală: analiză, obiective, portofoliu de proiecte și plan de acțiune pentru comunitate."
+      }
+    },
+    {
+      "slug": "documentatie-recrutare",
+      "familie": "implementare",
+      "stare": "pagina",
+      "ordine": 6,
+      "icon": "i-note-pencil",
+      "titluCard": "Documentație recrutare — posturi în afara organigramei",
+      "titluPagina": "Documentație recrutare — posturi în afara organigramei",
+      "lead": "Instituția dumneavoastră implementează un proiect cu finanțare europeană sau PNRR și are nevoie de personal suplimentar? Asociația Arțarului oferă servicii specializate pentru înființarea posturilor în afara organigramei și organizarea recrutării.",
+      "rezultat": "Asociația Arțarului – sprijin specializat pentru recrutarea personalului necesar implementării proiectelor cu finanțare europeană și PNRR.",
+      "context": [
+        "Fiecare documentație este adaptată proiectului, perioadei de implementare, activităților asumate și bugetului aprobat, astfel încât instituția să beneficieze de un proces de recrutare clar, coerent și corect fundamentat."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "documentele pentru fundamentarea necesității posturilor",
+            "nota justificativă",
+            "actul administrativ pentru înființarea posturilor în afara organigramei",
+            "procedura internă de recrutare și selecție",
+            "fișele de post și condițiile specifice de ocupare",
+            "anunțul de recrutare și formularele pentru candidați",
+            "documentele comisiei, grilele de evaluare și procesele-verbale",
+            "documentele privind rezultatele și soluționarea contestațiilor"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Documentație recrutare — posturi în afara organigramei | Asociația Arțarului",
+        "description": "Documentație pentru înființarea posturilor în afara organigramei și organizarea recrutării, pentru proiecte cu finanțare europeană și PNRR."
+      }
+    },
+    {
+      "slug": "implementare-management-proiecte",
+      "familie": "implementare",
+      "stare": "pagina",
+      "ordine": 7,
+      "icon": "i-path",
+      "titluCard": "Implementare și management proiecte",
+      "titluPagina": "Implementare și management proiecte",
+      "lead": "Obținerea finanțării este doar începutul. Implementarea corectă a proiectului presupune respectarea unor cerințe administrative, financiare și procedurale complexe, precum și gestionarea atentă a fiecărei etape.",
+      "rezultat": "Asociația Arțarului – sprijin profesionist de la semnarea contractului de finanțare până la finalizarea proiectului.",
+      "context": [
+        "Asociația Arțarului oferă consultanță și asistență pe parcursul implementării proiectelor cu finanțare europeană și PNRR, adaptată nevoilor fiecărui beneficiar și cerințelor specifice programului de finanțare.",
+        "Ne implicăm în implementarea efectivă a proiectului, oferind beneficiarului suport practic pentru organizarea documentelor, respectarea obligațiilor asumate și derularea corespunzătoare a activităților finanțate.",
+        "Solicitați o ofertă personalizată pentru implementarea proiectului dumneavoastră."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "organizarea și gestionarea activităților proiectului",
+            "întocmirea documentațiilor aferente achizițiilor",
+            "pregătirea documentelor și procedurilor de resurse umane",
+            "recrutarea și gestionarea personalului implicat în proiect",
+            "întocmirea documentelor administrative și justificative",
+            "monitorizarea termenelor, obligațiilor și indicatorilor asumați",
+            "pregătirea documentației necesare raportării și relației cu autoritatea finanțatoare",
+            "asistență în gestionarea modificărilor apărute pe parcursul implementării"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Implementare și management proiecte | Asociația Arțarului",
+        "description": "Consultanță și asistență pe parcursul implementării proiectelor europene și PNRR: achiziții, resurse umane, raportare, monitorizare."
+      }
+    },
+    {
+      "slug": "asistenta-personalizata-implementare",
+      "familie": "implementare",
+      "stare": "pagina",
+      "ordine": 8,
+      "icon": "i-scales",
+      "titluCard": "Asistență personalizată în implementare",
+      "titluPagina": "Asistență personalizată în implementare",
+      "lead": "Nu aveți nevoie de consultanță pentru întregul proiect? Puteți beneficia de sprijin exact acolo unde este necesar.",
+      "rezultat": "Asociația Arțarului – expertiza de care aveți nevoie, exact în etapa în care aveți nevoie de ea.",
+      "context": [
+        "Asociația Arțarului oferă servicii personalizate și asistență punctuală pentru diferite etape sau componente ale implementării proiectelor cu finanțare europeană și PNRR.",
+        "Serviciile sunt configurate în funcție de etapa în care se află proiectul, volumul de activitate și nevoile concrete ale beneficiarului.",
+        "Astfel, puteți solicita sprijin pentru o singură procedură, pentru o anumită componentă a proiectului sau pentru o perioadă determinată, fără a contracta servicii complete de implementare."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "pregătirea documentațiilor de achiziție",
+            "elaborarea documentelor și procedurilor de resurse umane",
+            "recrutarea personalului și documentația aferentă",
+            "întocmirea documentelor administrative și justificative",
+            "sprijin pentru raportare și monitorizarea proiectului",
+            "pregătirea documentației pentru modificări, notificări sau acte adiționale",
+            "verificarea și organizarea documentației proiectului",
+            "asistență punctuală pentru situații apărute pe parcursul implementării"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Asistență personalizată în implementare | Asociația Arțarului",
+        "description": "Sprijin punctual pentru etape sau componente ale implementării proiectelor europene și PNRR, fără servicii complete de consultanță."
+      }
+    },
+    {
+      "slug": "identitate-vizuala-promovare",
+      "familie": "comunicare",
+      "stare": "pagina",
+      "ordine": 9,
+      "icon": "i-palette",
+      "titluCard": "Identitate vizuală și promovare proiecte",
+      "titluPagina": "Identitate vizuală și promovare proiecte",
+      "lead": "Un proiect european bine implementat merită să fie și bine comunicat.",
+      "rezultat": "Asociația Arțarului – proiecte bine implementate, rezultate care merită să fie văzute.",
+      "context": [
+        "Asociația Arțarului oferă servicii de identitate vizuală, informare și promovare pentru proiectele finanțate din fonduri europene și PNRR, cu respectarea cerințelor de vizibilitate specifice fiecărui program de finanțare.",
+        "Iar pentru această componentă lucrăm alături de colaboratori extraordinari – profesioniști creativi, cu experiență și atenție la detalii, care reușesc să transforme cerințele tehnice de vizibilitate într-o comunicare modernă, coerentă și cu impact.",
+        "Pentru noi, promovarea unui proiect nu înseamnă doar îndeplinirea unei obligații contractuale. Înseamnă să facem vizibile investiția, rezultatele și schimbările pe care proiectul le aduce în comunitate.",
+        "Combinăm experiența noastră în proiecte europene cu creativitatea și profesionalismul colaboratorilor noștri, pentru ca fiecare proiect să fie comunicat profesionist și să aibă o identitate pe măsura impactului său."
+      ],
+      "livrabile": [
+        {
+          "titlu": "Vizibilitate pentru proiecte finanțate",
+          "elemente": [
+            "concepte vizuale și materiale grafice adaptate proiectului",
+            "afișe, panouri, plăci și alte elemente obligatorii de vizibilitate",
+            "materiale pentru website și social media",
+            "comunicate, anunțuri și materiale de prezentare",
+            "materiale pentru evenimente și activități publice",
+            "verificarea și integrarea corectă a elementelor obligatorii de identitate vizuală",
+            "adaptarea materialelor la cerințele programului și ale contractului de finanțare",
+            "sprijin pentru activitățile de informare, publicitate și promovare"
+          ]
+        },
+        {
+          "titlu": "Brand și comunicare",
+          "elemente": [
+            "marketing personalizat",
+            "administrare social media",
+            "identitate vizuală de brand",
+            "branding",
+            "dezvoltare website-uri și infrastructură web"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Identitate vizuală și promovare proiecte | Asociația Arțarului",
+        "description": "Identitate vizuală, informare și promovare pentru proiecte europene și PNRR, plus servicii de brand: marketing, social media, website."
+      }
+    },
+    {
+      "slug": "digitalizare-automatizare",
+      "familie": "comunicare",
+      "stare": "pagina",
+      "ordine": 10,
+      "icon": "i-gear",
+      "titluCard": "Digitalizare și automatizare",
+      "titluPagina": "Digitalizare și automatizare",
+      "lead": "Uneori, soluția nu este încă o procedură, încă un tabel sau încă un document. Este un sistem mai bun de lucru.",
+      "rezultat": "Asociația Arțarului – de la proces complicat la soluție care funcționează.",
+      "context": [
+        "Asociația Arțarului, împreună cu echipa sa de specialiști în automatizări, dezvoltă soluții personalizate pentru simplificarea, digitalizarea și automatizarea proceselor de lucru din cadrul instituțiilor și organizațiilor.",
+        "Pornim de la o nevoie concretă: un proces care consumă prea mult timp, informații gestionate în mai multe locuri, documente repetitive, termene dificil de urmărit sau activități care depind excesiv de intervenția manuală.",
+        "Analizăm împreună modul actual de lucru, identificăm etapele care pot fi simplificate și construim un sistem adaptat realității organizației – nu invers.",
+        "Nu propunem automatizarea doar pentru că este posibilă tehnic. Întâi înțelegem procesul, eliminăm ceea ce este inutil și stabilim ce merită cu adevărat digitalizat.",
+        "Experiența Asociației Arțarului în implementarea proiectelor și procese administrative este completată de expertiza tehnică a echipei noastre de automatizări. Împreună putem transforma o nevoie concretă într-un sistem de lucru mai simplu, mai clar și mai eficient.",
+        "Aveți un proces despre care vă gândiți că „ar trebui să existe o variantă mai simplă”? Haideți să o construim împreună."
+      ],
+      "livrabile": [
+        {
+          "titlu": null,
+          "elemente": [
+            "automatizarea fluxurilor de documente și a activităților repetitive",
+            "organizarea și urmărirea etapelor de implementare a proiectelor",
+            "monitorizarea termenelor, responsabilităților și indicatorilor",
+            "centralizarea informațiilor și documentelor într-un sistem coerent",
+            "generarea și gestionarea documentelor recurente",
+            "sisteme interne de notificare, verificare și raportare",
+            "digitalizarea unor procese administrative",
+            "integrarea unor instrumente și soluții deja utilizate în organizație",
+            "dezvoltarea unor fluxuri personalizate, adaptate unei nevoi specifice"
+          ]
+        }
+      ],
+      "pentruCine": [],
+      "pasi": [],
+      "faq": [],
+      "seo": {
+        "title": "Digitalizare și automatizare | Asociația Arțarului",
+        "description": "Soluții personalizate de digitalizare și automatizare a proceselor de lucru din instituții și organizații, adaptate nevoilor reale."
+      }
+    }
+  ]
+}
