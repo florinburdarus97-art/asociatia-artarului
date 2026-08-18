@@ -65,7 +65,9 @@ test('cerere validă produce titlul serviciului', () => {
     tipEntitate: 'UAT', localitate: 'Codlea', consimtamant: 'da'
   }, { acum: ACUM });
   assert.strictEqual(r.ok, true);
-  assert.strictEqual(r.curat.titluServiciu, 'Acreditarea serviciilor sociale');
+  // Titlul e derivat din servicii.json (titluCard), nu mai e hardcodat aici —
+  // de asta e mai lung decât cardul scurt folosit istoric pe paginile scrise de mână.
+  assert.strictEqual(r.curat.titluServiciu, 'Consultanță pentru acreditarea serviciilor sociale');
 });
 
 test('cerere fără consimțământ e respinsă', () => {

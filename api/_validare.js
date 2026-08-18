@@ -1,18 +1,6 @@
 'use strict';
 
-const SLUGURI_PERMISE = [
-  'acreditare-servicii-sociale',
-  'fonduri-nerambursabile',
-  'autorizare-anc-men',
-  'formare-anc'
-];
-
-const TITLURI = {
-  'acreditare-servicii-sociale': 'Acreditarea serviciilor sociale',
-  'fonduri-nerambursabile': 'Fonduri nerambursabile',
-  'autorizare-anc-men': 'Autorizare cursuri ANC și acreditare MEN',
-  'formare-anc': 'Formare profesională autorizată ANC'
-};
+const { SLUGURI_PERMISE, TITLURI } = require('./_servicii-permise.js');
 
 const ENTITATI = ['UAT', 'ONG', 'furnizor privat', 'persoană fizică'];
 
