@@ -96,3 +96,71 @@ test('incarcaManifest citește manifestul real și îl întoarce parsat', () => 
   assert.strictEqual(m.servicii.length, 10);
   assert.strictEqual(m.familii.length, 4);
 });
+
+test('hrefCard trimite fiecare stare unde trebuie', () => {
+  assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'pagina' }), 'servicii/x.html');
+  assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'ancora' }), 'servicii.html#x');
+  assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'in-lucru' }), null);
+});
+
+test('cardul pe stare pagina are link, săgeată și overlay clickabil', () => {
+  const html = G.randCard({
+    slug: 'digitalizare-automatizare', stare: 'pagina', icon: 'i-gear',
+    titluCard: 'Digitalizare și automatizare', lead: 'Un sistem mai bun de lucru.'
+  });
+  assert.ok(html.includes('href="servicii/digitalizare-automatizare.html"'));
+  assert.ok(html.includes('svc-card-link'), 'lipsește overlay-ul care face tot cardul clickabil');
+  assert.ok(html.includes('#i-gear'));
+  assert.ok(html.includes('Digitalizare și automatizare'));
+  assert.ok(!html.includes('svc-badge'));
+});
+
+test('cardul pe stare in-lucru are badge și niciun link', () => {
+  const html = G.randCard({
+    slug: 'formare-anc', stare: 'in-lucru', icon: 'i-medal',
+    titluCard: 'Formare profesională autorizată ANC', lead: 'Cursuri cu certificare ANC.'
+  });
+  assert.ok(html.includes('svc-badge'));
+  assert.ok(html.includes('În lucru'));
+  assert.ok(!html.includes('<a '), 'cardul în lucru nu trebuie să conțină link');
+});
+
+test('cardul escapează conținutul din manifest', () => {
+  const html = G.randCard({
+    slug: 'x', stare: 'ancora', icon: 'i-scales',
+    titluCard: '<script>alert(1)</script>', lead: 'ok'
+  });
+  assert.ok(!html.includes('<script>'));
+  assert.ok(html.includes('&lt;script&gt;'));
+});
+
+test('grila are patru secțiuni de familie, în ordinea din manifest', () => {
+  const html = G.randGrila(G.incarcaManifest());
+  for (const titlu of ['Acreditări și autorizări', 'Finanțare', 'Implementare', 'Comunicare și tehnologie']) {
+    assert.ok(html.includes(titlu), `lipsește familia ${titlu}`);
+  }
+  const poz = ['Acreditări și autorizări', 'Finanțare', 'Implementare', 'Comunicare și tehnologie']
+    .map((t) => html.indexOf(t));
+  assert.deepStrictEqual(poz, [...poz].sort((a, b) => a - b), 'familiile nu sunt în ordine');
+});
+
+test('grila conține toate cele zece carduri', () => {
+  const m = G.incarcaManifest();
+  const html = G.randGrila(m);
+  for (const s of m.servicii) {
+    assert.ok(html.includes(G.esc(s.titluCard)), `lipsește cardul ${s.slug}`);
+  }
+});
+
+test('grila ordonează serviciile după câmpul ordine în fiecare familie', () => {
+  const m = G.incarcaManifest();
+  const html = G.randGrila(m);
+  for (const f of m.familii) {
+    const aleFamiliei = m.servicii
+      .filter((s) => s.familie === f.id)
+      .sort((a, b) => a.ordine - b.ordine)
+      .map((s) => html.indexOf(G.esc(s.titluCard)));
+    assert.deepStrictEqual(aleFamiliei, [...aleFamiliei].sort((a, b) => a - b),
+      `familia ${f.id} nu respectă ordinea`);
+  }
+});

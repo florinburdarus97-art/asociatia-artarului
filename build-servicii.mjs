@@ -80,3 +80,50 @@ export function prefixeaza(html, prefix) {
 
   return out;
 }
+
+export function hrefCard(s) {
+  if (s.stare === 'pagina') return `servicii/${s.slug}.html`;
+  if (s.stare === 'ancora') return `servicii.html#${s.slug}`;
+  return null;
+}
+
+export function randCard(s) {
+  const href = hrefCard(s);
+  const corp = `
+          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
+          <h3 class="svc-title">${esc(s.titluCard)}</h3>
+          <p class="svc-text">${esc(s.lead)}</p>`;
+
+  if (!href) {
+    return `        <article class="svc svc--in-lucru">${corp}
+          <span class="svc-badge">În lucru</span>
+        </article>`;
+  }
+
+  return `        <article class="svc">${corp}
+          <a class="svc-card-link" href="${href}">
+            <span>Detalii</span>
+            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </a>
+        </article>`;
+}
+
+export function randGrila(manifest) {
+  return manifest.familii.map((f) => {
+    const carduri = manifest.servicii
+      .filter((s) => s.familie === f.id)
+      .sort((a, b) => a.ordine - b.ordine)
+      .map(randCard)
+      .join('\n');
+
+    return `      <section class="svc-family" aria-labelledby="fam-${esc(f.id)}">
+        <header class="svc-family-head" data-reveal>
+          <h2 id="fam-${esc(f.id)}" class="svc-family-title">${esc(f.titlu)}</h2>
+          <p class="svc-family-lead">${esc(f.lead)}</p>
+        </header>
+        <div class="svc-grid">
+${carduri}
+        </div>
+      </section>`;
+  }).join('\n\n');
+}

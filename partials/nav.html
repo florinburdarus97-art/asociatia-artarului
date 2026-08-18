@@ -1,0 +1,43 @@
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="Asociația Arțarului, acasă">
+        <img class="brand-mark" src="assets/img/logo-96.png" srcset="assets/img/logo-96.png 1x, assets/img/logo-192.png 2x" width="46" height="46" alt="" aria-hidden="true">
+        <span class="brand-name">Asociația Arțarului</span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Navigare principală">
+        <a href="index.html">Acasă</a>
+        <a href="despre.html">Despre noi</a>
+        <a href="servicii.html">Servicii</a>
+        <a href="portofoliu.html">Portofoliu</a>
+        <a href="proiecte.html">Proiecte</a>
+        <a class="nav-cta" href="contact.html" aria-current="page">Contact</a>
+      </nav>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Deschide meniul">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MENIU MOBIL (S7) - overlay full-screen, frate al headerului
+       (nu copil: backdrop-filter pe .nav ar re-ancora poziția fixed).
+       ============================================================ -->
+  <nav class="menu" id="mobile-menu" aria-label="Meniu mobil">
+    <img class="menu-leaf" src="assets/img/leaf-sage-480.webp" width="480" height="445" alt="" aria-hidden="true">
+    <div class="menu-inner">
+      <ol class="menu-list">
+        <li style="--i:0"><a class="menu-link" href="index.html"><span class="menu-num" aria-hidden="true">01</span><span class="menu-text">Acasă</span></a></li>
+        <li style="--i:1"><a class="menu-link" href="despre.html"><span class="menu-num" aria-hidden="true">02</span><span class="menu-text">Despre noi</span></a></li>
+        <li style="--i:2"><a class="menu-link" href="servicii.html"><span class="menu-num" aria-hidden="true">03</span><span class="menu-text">Servicii</span></a></li>
+        <li style="--i:3"><a class="menu-link" href="portofoliu.html"><span class="menu-num" aria-hidden="true">04</span><span class="menu-text">Portofoliu</span></a></li>
+        <li style="--i:4"><a class="menu-link" href="proiecte.html"><span class="menu-num" aria-hidden="true">05</span><span class="menu-text">Proiecte</span></a></li>
+      </ol>
+      <a class="menu-cta" href="contact.html" style="--i:5" aria-current="page">Contact<svg class="menu-cta-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <div class="menu-meta" style="--i:6">
+        <p class="menu-values">Educație · Dezvoltare · Comunitate</p>
+        <a href="tel:+40734032624"><svg class="menu-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-phone"/></svg>0734 032 624</a>
+        <a href="mailto:office@artarului.ro"><svg class="menu-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-envelope"/></svg>office@artarului.ro</a>
+        <a href="https://www.facebook.com/share/14gfUaPCypH/?mibextid=wwXIfr" target="_blank" rel="noopener"><svg class="menu-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-facebook"/></svg>Facebook</a>
+      </div>
+    </div>
+  </nav>
