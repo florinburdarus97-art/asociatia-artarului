@@ -275,7 +275,7 @@ ${prefixeaza(partials.nav, P)}
 ${bucati.join('\n\n')}
   </main>
 ${prefixeaza(partials.footer, P)}
-<script src="${P}js/main.js?v=20260818"></script>
+<script src="${P}js/main.js?v=20260819"></script>
 </body>
 </html>
 `;
@@ -316,7 +316,7 @@ ${formular}
     </section>
   </main>
 ${partials.footer}
-<script src="js/main.js?v=20260818"></script>
+<script src="js/main.js?v=20260819"></script>
 </body>
 </html>
 `;
