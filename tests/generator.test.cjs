@@ -144,6 +144,20 @@ test('grila are patru secțiuni de familie, în ordinea din manifest', () => {
   assert.deepStrictEqual(poz, [...poz].sort((a, b) => a - b), 'familiile nu sunt în ordine');
 });
 
+test('sprite-ul acoperă fiecare iconiță cerută de manifest', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const sprite = fs.readFileSync(path.join(__dirname, '..', 'partials', 'sprite.html'), 'utf8');
+  const prezente = new Set([...sprite.matchAll(/symbol id="([^"]+)"/g)].map((m) => m[1]));
+  for (const s of G.incarcaManifest().servicii) {
+    assert.ok(prezente.has(s.icon), `sprite-ul nu conține ${s.icon}, cerut de ${s.slug}`);
+  }
+  // iconițele folosite de nav, footer și formular
+  for (const i of ['i-arrow-right', 'i-phone', 'i-envelope', 'i-facebook', 'i-check-circle', 'i-warning-circle']) {
+    assert.ok(prezente.has(i), `sprite-ul nu conține ${i}, folosit de fragmentele comune`);
+  }
+});
+
 test('grila conține toate cele zece carduri', () => {
   const m = G.incarcaManifest();
   const html = G.randGrila(m);
