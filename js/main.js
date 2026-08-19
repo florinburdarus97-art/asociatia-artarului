@@ -749,3 +749,76 @@
     kick();
   });
 })();
+
+/* ============================================================
+   DIALOGURILE SERVICIILOR (hub) + PRESELECȚIA DIN QUERY
+   Serviciile fără pagină proprie se deschid într-un <dialog> nativ,
+   generat în servicii.html. Fără JS, butoanele nu fac nimic vizibil —
+   de aceea butonul din dialog duce oricum la pagina de cerere, care
+   funcționează și fără script.
+   ============================================================ */
+(function () {
+  var declansatoare = document.querySelectorAll('[data-dialog]');
+  if (!declansatoare.length) return;
+
+  // Fără suport <dialog>, butoanele devin legături către pagina de cerere:
+  // mai bine o cale mai lungă decât un buton mort.
+  var areDialog = typeof HTMLDialogElement === 'function' &&
+    typeof HTMLDialogElement.prototype.showModal === 'function';
+
+  Array.prototype.forEach.call(declansatoare, function (btn) {
+    var dlg = document.getElementById(btn.getAttribute('data-dialog'));
+    if (!dlg) return;
+
+    if (!areDialog) {
+      var alt = dlg.querySelector('.svc-modal-final a[href]');
+      if (alt) {
+        btn.addEventListener('click', function () { window.location.href = alt.href; });
+      }
+      return;
+    }
+
+    btn.addEventListener('click', function () {
+      dlg.showModal();
+      var titlu = dlg.querySelector('.svc-modal-titlu');
+      if (titlu) {
+        titlu.setAttribute('tabindex', '-1');
+        titlu.focus();
+      }
+    });
+
+    // Închidere: butoanele marcate, plus click pe fundalul din spatele panoului.
+    Array.prototype.forEach.call(dlg.querySelectorAll('[data-inchide]'), function (x) {
+      x.addEventListener('click', function () { dlg.close(); });
+    });
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) dlg.close();
+    });
+
+    // Întoarce focusul pe rândul din care s-a deschis dialogul.
+    dlg.addEventListener('close', function () { btn.focus(); });
+  });
+})();
+
+/* Preselectează serviciul pe pagina de cerere din `?serviciu=<slug>`.
+   Valoarea nu ajunge niciodată în DOM ca text: se caută printre opțiunile
+   deja existente și se selectează una dintre ele sau niciuna. */
+(function () {
+  var select = document.getElementById('serviciu');
+  if (!select || !window.location.search) return;
+
+  var cerut = null;
+  try {
+    cerut = new URLSearchParams(window.location.search).get('serviciu');
+  } catch (e) {
+    return;
+  }
+  if (!cerut) return;
+
+  for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].value === cerut) {
+      select.selectedIndex = i;
+      return;
+    }
+  }
+})();

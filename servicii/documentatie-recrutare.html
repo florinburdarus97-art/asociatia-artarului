@@ -23,7 +23,7 @@
   <link rel="preload" href="../assets/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
-  <link rel="stylesheet" href="../css/style.css?v=20260820">
+  <link rel="stylesheet" href="../css/style.css?v=20260821">
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <!-- Subpagină: fără #intro (rulează doar pe homepage), deci fără scriptul de pre-render și fără GSAP. -->
 
@@ -94,6 +94,9 @@
     </defs>
   </svg>
 
+  <!-- Santinelă pentru starea „stuck" a navbar-ului (IntersectionObserver, fără scroll listener). -->
+  <div id="top-sentinel" aria-hidden="true"></div>
+
   <header class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="../index.html" aria-label="Asociația Arțarului, acasă">
@@ -106,7 +109,7 @@
         <a class="nav-link-accent" href="../servicii.html">Servicii</a>
         <a href="../portofoliu.html">Portofoliu</a>
         <a href="../proiecte.html">Proiecte</a>
-        <a class="nav-cta" href="../contact.html" aria-current="page">Contact</a>
+        <a class="nav-cta" href="../contact.html">Contact</a>
       </nav>
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Deschide meniul">
         <span></span><span></span>
@@ -128,7 +131,7 @@
         <li style="--i:3"><a class="menu-link" href="../portofoliu.html"><span class="menu-num" aria-hidden="true">04</span><span class="menu-text">Portofoliu</span></a></li>
         <li style="--i:4"><a class="menu-link" href="../proiecte.html"><span class="menu-num" aria-hidden="true">05</span><span class="menu-text">Proiecte</span></a></li>
       </ol>
-      <a class="menu-cta" href="../contact.html" style="--i:5" aria-current="page">Contact<svg class="menu-cta-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <a class="menu-cta" href="../contact.html" style="--i:5">Contact<svg class="menu-cta-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
       <div class="menu-meta" style="--i:6">
         <p class="menu-values">Educație · Dezvoltare · Comunitate</p>
         <a href="tel:+40734032624"><svg class="menu-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-phone"/></svg>0734 032 624</a>
@@ -139,54 +142,77 @@
   </nav>
 
   <main id="main">
-    <nav class="breadcrumb" aria-label="Traseu">
-      <ol>
-        <li><a href="../index.html">Acasă</a></li>
-        <li><a href="../servicii.html">Servicii</a></li>
-        <li aria-current="page">Documentație recrutare — posturi în afara organigramei</li>
-      </ol>
-    </nav>
-
-    <section class="page-head">
+    <section class="page-head svc-page-head">
+      <img class="page-head-leaf" src="../assets/img/leaf-sage-480.webp" width="260" height="241" alt="" loading="lazy" aria-hidden="true">
       <div class="section-inner">
-        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-note-pencil"/></svg></span>
+        <nav class="breadcrumb" aria-label="Traseu">
+          <ol>
+            <li><a href="../index.html">Acasă</a></li>
+            <li><a href="../servicii.html">Servicii</a></li>
+            <li aria-current="page">Documentație recrutare — posturi în afara organigramei</li>
+          </ol>
+        </nav>
+        <span class="svc-page-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-note-pencil"/></svg></span>
         <h1 class="page-title">Documentație recrutare — posturi în afara organigramei</h1>
         <p class="page-lead">Instituția dumneavoastră implementează un proiect cu finanțare europeană sau PNRR și are nevoie de personal suplimentar? Întocmim documentația necesară pentru înființarea posturilor în afara organigramei și pentru organizarea procedurii de recrutare.</p>
+        <p class="svc-page-cta">
+          <a class="btn btn-primary" href="#formular">Cere o ofertă</a>
+          <a class="btn btn-contur" href="../servicii.html">Toate serviciile</a>
+        </p>
       </div>
     </section>
 
-    <section class="section ">
+    <section class="section">
       <div class="section-inner">
-        <p class="svc-detail-text">Asociația Arțarului oferă servicii specializate pentru întocmirea documentației necesare înființării posturilor în afara organigramei și organizării procedurii de recrutare și selecție a personalului, în conformitate cu cadrul legal aplicabil.</p>
-        <p class="svc-detail-text">Fiecare documentație este adaptată proiectului, perioadei de implementare, activităților asumate și bugetului aprobat, astfel încât instituția să beneficieze de un proces de recrutare clar, coerent și corect fundamentat.</p>
+        <div class="svc-detail">
+          <div class="svc-detail-copy">
+            <p class="svc-detail-text">Asociația Arțarului oferă servicii specializate pentru întocmirea documentației necesare înființării posturilor în afara organigramei și organizării procedurii de recrutare și selecție a personalului, în conformitate cu cadrul legal aplicabil.</p>
+            <p class="svc-detail-text">Fiecare documentație este adaptată proiectului, perioadei de implementare, activităților asumate și bugetului aprobat, astfel încât instituția să beneficieze de un proces de recrutare clar, coerent și corect fundamentat.</p>
+          </div>
+          <aside class="svc-detail-aside">
+            <div class="svc-fisa">
+              <h2 class="aside-label">Rezultatul</h2>
+              <p class="svc-fisa-rezultat"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#i-check-circle"/></svg><span>Asociația Arțarului – sprijin specializat pentru recrutarea personalului necesar implementării proiectelor cu finanțare europeană și PNRR.</span></p>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
-    <section class="section ">
+    <section class="section tint">
       <div class="section-inner">
         <h2 class="section-title">Ce cuprinde</h2>
-        <ul class="pill-list">
-          <li>documentele pentru fundamentarea necesității posturilor</li>
-          <li>nota justificativă</li>
-          <li>actul administrativ pentru înființarea posturilor în afara organigramei</li>
-          <li>procedura internă de recrutare și selecție</li>
-          <li>fișele de post și condițiile specifice de ocupare</li>
-          <li>anunțul de recrutare și formularele pentru candidați</li>
-          <li>documentele comisiei, grilele de evaluare și procesele-verbale</li>
-          <li>documentele privind rezultatele și soluționarea contestațiilor</li>
-        </ul>
+        <div class="svc-livrabile">
+          <div class="svc-livrabil">
+            <ul class="pill-list">
+              <li>documentele pentru fundamentarea necesității posturilor</li>
+              <li>nota justificativă</li>
+              <li>actul administrativ pentru înființarea posturilor în afara organigramei</li>
+              <li>procedura internă de recrutare și selecție</li>
+              <li>fișele de post și condițiile specifice de ocupare</li>
+              <li>anunțul de recrutare și formularele pentru candidați</li>
+              <li>documentele comisiei, grilele de evaluare și procesele-verbale</li>
+              <li>documentele privind rezultatele și soluționarea contestațiilor</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section ">
-      <div class="section-inner">
-        <p class="svc-result"><span class="svc-result-text">Asociația Arțarului – sprijin specializat pentru recrutarea personalului necesar implementării proiectelor cu finanțare europeană și PNRR.</span></p>
-      </div>
-    </section>
-
-    <section class="section ">
-      <div class="section-inner">
-        <h2 class="section-title">Cere o ofertă</h2>
+    <section class="section svc-form" id="formular">
+      <div class="section-inner svc-form-layout">
+        <div class="svc-form-lateral">
+          <h2 class="section-title">Cere o ofertă</h2>
+          <p class="svc-form-text">Spune-ne pe scurt unde te afli. Îți răspundem cu pașii concreți pentru situația ta, nu cu un mesaj tipizat.</p>
+          <h3 class="aside-label">Ce urmează</h3>
+          <ol class="svc-form-pasi">
+            <li>Primești un e-mail de confirmare că cererea a ajuns la noi.</li>
+            <li>Analizăm situația și revenim cu o direcție clară.</li>
+            <li>Stabilim, dacă e nevoie, o discuție pentru detalii.</li>
+          </ol>
+          <p class="svc-form-direct">Completează formularul: ajunge direct la echipa care se ocupă de serviciul ăsta, cu contextul deja atașat.</p>
+        </div>
+        <div class="svc-form-card">
 <form class="contact-form" id="contact-form" action="/api/contact" method="post" novalidate>
   <!-- Honeypot anti-spam: rămâne gol pentru oameni, ascuns vizual și de la screen readere -->
   <div class="hp-field" aria-hidden="true">
@@ -291,6 +317,7 @@
   </p>
 </form>
 
+        </div>
       </div>
     </section>
   </main>
@@ -333,6 +360,6 @@
     </div>
   </footer>
 
-<script src="../js/main.js?v=20260820"></script>
+<script src="../js/main.js?v=20260821"></script>
 </body>
 </html>

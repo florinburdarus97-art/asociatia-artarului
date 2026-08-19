@@ -97,56 +97,94 @@ test('incarcaManifest citește manifestul real și îl întoarce parsat', () => 
   assert.strictEqual(m.familii.length, 4);
 });
 
-test('hrefCard trimite orice serviciu la pagina lui', () => {
+test('hrefCard: doar starea `pagina` produce o legătură', () => {
   assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'pagina' }), 'servicii/x.html');
-  assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'in-lucru' }), null);
+  assert.strictEqual(G.hrefCard({ slug: 'x', stare: 'modal' }), null);
 });
 
-test('cardul cu etichetă o afișează, dar rămâne linkat', () => {
-  const html = G.randCard({ slug: 'formare-anc', stare: 'pagina', icon: 'i-medal',
+test('rândul cu etichetă o afișează, dar rămâne linkat', () => {
+  const html = G.randRand({ slug: 'formare-anc', stare: 'pagina', icon: 'i-medal',
     titluCard: 'Formare ANC', lead: 'x', eticheta: 'În pregătire' });
-  assert.ok(html.includes('svc-eticheta'));
+  assert.ok(html.includes('svc-row-eticheta'));
   assert.ok(html.includes('În pregătire'));
   assert.ok(html.includes('href="servicii/formare-anc.html"'), 'eticheta nu suspendă linkul');
 });
 
-test('grila emite containerul de index și marchează familia', () => {
-  const html = G.randGrila(G.incarcaManifest());
-  assert.ok(html.includes('svc-index'), 'lipsește containerul de index');
-  for (const f of G.incarcaManifest().familii) {
+test('grila emite lista de rânduri și marchează familia', () => {
+  const m = G.incarcaManifest();
+  const html = G.randGrila(m);
+  assert.ok(html.includes('<ul class="svc-list">'), 'lipsește lista de index');
+  assert.ok(!html.includes('svc-index'), 'grila decalată de carduri a fost eliminată');
+  assert.ok(!/<article class="svc"/.test(html), 'indexul nu mai folosește cardul .svc');
+  for (const f of m.familii) {
     assert.ok(html.includes(`data-familie="${f.id}"`), `lipsește marcajul familiei ${f.id}`);
   }
 });
 
-test('cardul pe stare pagina are link, săgeată și overlay clickabil', () => {
-  const html = G.randCard({
+test('rândul pe stare pagina e o ancoră cu săgeată, fără buton de dialog', () => {
+  const html = G.randRand({
     slug: 'digitalizare-automatizare', stare: 'pagina', icon: 'i-gear',
     titluCard: 'Digitalizare și automatizare', lead: 'Un sistem mai bun de lucru.'
   });
   assert.ok(html.includes('href="servicii/digitalizare-automatizare.html"'));
-  assert.ok(html.includes('svc-card-link'), 'lipsește overlay-ul care face tot cardul clickabil');
+  assert.ok(html.includes('svc-row-link'));
+  assert.ok(html.includes('svc-row-sageata'));
   assert.ok(html.includes('#i-gear'));
   assert.ok(html.includes('Digitalizare și automatizare'));
-  assert.ok(!html.includes('svc-badge'));
+  assert.ok(!html.includes('data-dialog'), 'un serviciu cu pagină nu deschide dialog');
 });
 
-test('cardul pe stare in-lucru are badge și niciun link', () => {
-  const html = G.randCard({
-    slug: 'formare-anc', stare: 'in-lucru', icon: 'i-medal',
+test('rândul fără pagină e un buton care deschide dialogul, nu un link', () => {
+  const html = G.randRand({
+    slug: 'formare-anc', stare: 'modal', icon: 'i-medal',
     titluCard: 'Formare profesională autorizată ANC', lead: 'Cursuri cu certificare ANC.'
   });
-  assert.ok(html.includes('svc-badge'));
-  assert.ok(html.includes('În lucru'));
-  assert.ok(!html.includes('<a '), 'cardul în lucru nu trebuie să conțină link');
+  assert.ok(html.includes('data-dialog="dlg-formare-anc"'));
+  assert.ok(html.includes('aria-haspopup="dialog"'));
+  assert.ok(html.includes('type="button"'));
+  assert.ok(!html.includes('<a '), 'rândul fără pagină nu trebuie să conțină link');
 });
 
-test('cardul escapează conținutul din manifest', () => {
-  const html = G.randCard({
-    slug: 'x', stare: 'ancora', icon: 'i-scales',
+test('rândul escapează conținutul din manifest', () => {
+  const html = G.randRand({
+    slug: 'x', stare: 'modal', icon: 'i-scales',
     titluCard: '<script>alert(1)</script>', lead: 'ok'
   });
   assert.ok(!html.includes('<script>'));
   assert.ok(html.includes('&lt;script&gt;'));
+});
+
+test('dialogul poartă titlul, butonul de cerere și niciun formular', () => {
+  const m = G.incarcaManifest();
+  const s = m.servicii.find((x) => x.stare !== 'pagina');
+  assert.ok(s, 'manifestul trebuie să aibă cel puțin un serviciu fără pagină');
+  const html = G.randModal(s);
+  assert.ok(html.includes(`<dialog class="svc-modal" id="dlg-${s.slug}"`));
+  assert.ok(html.includes(`aria-labelledby="dlg-${s.slug}-titlu"`));
+  assert.ok(html.includes(`href="cerere-consultanta.html?serviciu=${s.slug}"`));
+  assert.ok(html.includes('data-inchide'), 'lipsește butonul de închidere');
+  assert.ok(!html.includes('<form'), 'dialogul nu conține formular: un singur widget Turnstile pe pagină');
+  assert.ok(!html.includes('cf-turnstile'), 'dialogul nu conține widget de captcha');
+});
+
+test('randModale acoperă exact serviciile fără pagină proprie', () => {
+  const m = G.incarcaManifest();
+  const html = G.randModale(m);
+  for (const s of m.servicii) {
+    const prezent = html.includes(`id="dlg-${s.slug}"`);
+    assert.strictEqual(prezent, s.stare !== 'pagina',
+      `${s.slug} (${s.stare}) ${prezent ? 'nu ar trebui' : 'ar trebui'} să aibă dialog`);
+  }
+});
+
+test('dialogul nu repetă lead-ul în corpul de text', () => {
+  const m = G.incarcaManifest();
+  for (const s of m.servicii.filter((x) => x.stare !== 'pagina')) {
+    for (const par of s.context || []) {
+      assert.notStrictEqual(par.trim(), String(s.lead).trim(),
+        `${s.slug}: contextul repetă lead-ul`);
+    }
+  }
 });
 
 test('grila are patru secțiuni de familie, în ordinea din manifest', () => {
@@ -173,7 +211,7 @@ test('sprite-ul acoperă fiecare iconiță cerută de manifest', () => {
   }
 });
 
-test('grila conține toate cele zece carduri', () => {
+test('grila conține toate cele zece servicii', () => {
   const m = G.incarcaManifest();
   const html = G.randGrila(m);
   for (const s of m.servicii) {

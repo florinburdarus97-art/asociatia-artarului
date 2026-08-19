@@ -3,3 +3,5 @@ partials/
 .superpowers/
 *.md
 .DS_Store
+servicii.json
+build-servicii.mjs

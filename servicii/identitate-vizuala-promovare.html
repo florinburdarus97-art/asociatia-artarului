@@ -23,7 +23,7 @@
   <link rel="preload" href="../assets/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
-  <link rel="stylesheet" href="../css/style.css?v=20260820">
+  <link rel="stylesheet" href="../css/style.css?v=20260821">
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <!-- Subpagină: fără #intro (rulează doar pe homepage), deci fără scriptul de pre-render și fără GSAP. -->
 
@@ -94,6 +94,9 @@
     </defs>
   </svg>
 
+  <!-- Santinelă pentru starea „stuck" a navbar-ului (IntersectionObserver, fără scroll listener). -->
+  <div id="top-sentinel" aria-hidden="true"></div>
+
   <header class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="../index.html" aria-label="Asociația Arțarului, acasă">
@@ -106,7 +109,7 @@
         <a class="nav-link-accent" href="../servicii.html">Servicii</a>
         <a href="../portofoliu.html">Portofoliu</a>
         <a href="../proiecte.html">Proiecte</a>
-        <a class="nav-cta" href="../contact.html" aria-current="page">Contact</a>
+        <a class="nav-cta" href="../contact.html">Contact</a>
       </nav>
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Deschide meniul">
         <span></span><span></span>
@@ -128,7 +131,7 @@
         <li style="--i:3"><a class="menu-link" href="../portofoliu.html"><span class="menu-num" aria-hidden="true">04</span><span class="menu-text">Portofoliu</span></a></li>
         <li style="--i:4"><a class="menu-link" href="../proiecte.html"><span class="menu-num" aria-hidden="true">05</span><span class="menu-text">Proiecte</span></a></li>
       </ol>
-      <a class="menu-cta" href="../contact.html" style="--i:5" aria-current="page">Contact<svg class="menu-cta-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <a class="menu-cta" href="../contact.html" style="--i:5">Contact<svg class="menu-cta-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
       <div class="menu-meta" style="--i:6">
         <p class="menu-values">Educație · Dezvoltare · Comunitate</p>
         <a href="tel:+40734032624"><svg class="menu-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-phone"/></svg>0734 032 624</a>
@@ -139,65 +142,90 @@
   </nav>
 
   <main id="main">
-    <nav class="breadcrumb" aria-label="Traseu">
-      <ol>
-        <li><a href="../index.html">Acasă</a></li>
-        <li><a href="../servicii.html">Servicii</a></li>
-        <li aria-current="page">Identitate vizuală și promovare proiecte</li>
-      </ol>
-    </nav>
-
-    <section class="page-head">
+    <section class="page-head svc-page-head">
+      <img class="page-head-leaf" src="../assets/img/leaf-sage-480.webp" width="260" height="241" alt="" loading="lazy" aria-hidden="true">
       <div class="section-inner">
-        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-palette"/></svg></span>
+        <nav class="breadcrumb" aria-label="Traseu">
+          <ol>
+            <li><a href="../index.html">Acasă</a></li>
+            <li><a href="../servicii.html">Servicii</a></li>
+            <li aria-current="page">Identitate vizuală și promovare proiecte</li>
+          </ol>
+        </nav>
+        <span class="svc-page-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-palette"/></svg></span>
         <h1 class="page-title">Identitate vizuală și promovare proiecte</h1>
         <p class="page-lead">Un proiect european bine implementat merită să fie și bine comunicat.</p>
+        <p class="svc-page-cta">
+          <a class="btn btn-primary" href="#formular">Cere o ofertă</a>
+          <a class="btn btn-contur" href="../servicii.html">Toate serviciile</a>
+        </p>
       </div>
     </section>
 
-    <section class="section ">
+    <section class="section">
       <div class="section-inner">
-        <p class="svc-detail-text">Asociația Arțarului oferă servicii de identitate vizuală, informare și promovare pentru proiectele finanțate din fonduri europene și PNRR, cu respectarea cerințelor de vizibilitate specifice fiecărui program de finanțare.</p>
-        <p class="svc-detail-text">Iar pentru această componentă lucrăm alături de colaboratori extraordinari – profesioniști creativi, cu experiență și atenție la detalii, care reușesc să transforme cerințele tehnice de vizibilitate într-o comunicare modernă, coerentă și cu impact.</p>
-        <p class="svc-detail-text">Pentru noi, promovarea unui proiect nu înseamnă doar îndeplinirea unei obligații contractuale. Înseamnă să facem vizibile investiția, rezultatele și schimbările pe care proiectul le aduce în comunitate.</p>
-        <p class="svc-detail-text">Combinăm experiența noastră în proiecte europene cu creativitatea și profesionalismul colaboratorilor noștri, pentru ca fiecare proiect să fie comunicat profesionist și să aibă o identitate pe măsura impactului său.</p>
+        <div class="svc-detail">
+          <div class="svc-detail-copy">
+            <p class="svc-detail-text">Asociația Arțarului oferă servicii de identitate vizuală, informare și promovare pentru proiectele finanțate din fonduri europene și PNRR, cu respectarea cerințelor de vizibilitate specifice fiecărui program de finanțare.</p>
+            <p class="svc-detail-text">Iar pentru această componentă lucrăm alături de colaboratori extraordinari – profesioniști creativi, cu experiență și atenție la detalii, care reușesc să transforme cerințele tehnice de vizibilitate într-o comunicare modernă, coerentă și cu impact.</p>
+            <p class="svc-detail-text">Pentru noi, promovarea unui proiect nu înseamnă doar îndeplinirea unei obligații contractuale. Înseamnă să facem vizibile investiția, rezultatele și schimbările pe care proiectul le aduce în comunitate.</p>
+            <p class="svc-detail-text">Combinăm experiența noastră în proiecte europene cu creativitatea și profesionalismul colaboratorilor noștri, pentru ca fiecare proiect să fie comunicat profesionist și să aibă o identitate pe măsura impactului său.</p>
+          </div>
+          <aside class="svc-detail-aside">
+            <div class="svc-fisa">
+              <h2 class="aside-label">Rezultatul</h2>
+              <p class="svc-fisa-rezultat"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#i-check-circle"/></svg><span>Asociația Arțarului – proiecte bine implementate, rezultate care merită să fie văzute.</span></p>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
-    <section class="section ">
+    <section class="section tint">
       <div class="section-inner">
         <h2 class="section-title">Ce cuprinde</h2>
-        <h3 class="aside-label">Vizibilitate pentru proiecte finanțate</h3>
-        <ul class="pill-list">
-          <li>concepte vizuale și materiale grafice adaptate proiectului</li>
-          <li>afișe, panouri, plăci și alte elemente obligatorii de vizibilitate</li>
-          <li>materiale pentru website și social media</li>
-          <li>comunicate, anunțuri și materiale de prezentare</li>
-          <li>materiale pentru evenimente și activități publice</li>
-          <li>verificarea și integrarea corectă a elementelor obligatorii de identitate vizuală</li>
-          <li>adaptarea materialelor la cerințele programului și ale contractului de finanțare</li>
-          <li>sprijin pentru activitățile de informare, publicitate și promovare</li>
-        </ul>
-        <h3 class="aside-label">Brand și comunicare</h3>
-        <ul class="pill-list">
-          <li>marketing personalizat</li>
-          <li>administrare social media</li>
-          <li>identitate vizuală de brand</li>
-          <li>branding</li>
-          <li>dezvoltare website-uri și infrastructură web</li>
-        </ul>
+        <div class="svc-livrabile">
+          <div class="svc-livrabil">
+            <h3 class="aside-label">Vizibilitate pentru proiecte finanțate</h3>
+            <ul class="pill-list">
+              <li>concepte vizuale și materiale grafice adaptate proiectului</li>
+              <li>afișe, panouri, plăci și alte elemente obligatorii de vizibilitate</li>
+              <li>materiale pentru website și social media</li>
+              <li>comunicate, anunțuri și materiale de prezentare</li>
+              <li>materiale pentru evenimente și activități publice</li>
+              <li>verificarea și integrarea corectă a elementelor obligatorii de identitate vizuală</li>
+              <li>adaptarea materialelor la cerințele programului și ale contractului de finanțare</li>
+              <li>sprijin pentru activitățile de informare, publicitate și promovare</li>
+            </ul>
+          </div>
+          <div class="svc-livrabil">
+            <h3 class="aside-label">Brand și comunicare</h3>
+            <ul class="pill-list">
+              <li>marketing personalizat</li>
+              <li>administrare social media</li>
+              <li>identitate vizuală de brand</li>
+              <li>branding</li>
+              <li>dezvoltare website-uri și infrastructură web</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section ">
-      <div class="section-inner">
-        <p class="svc-result"><span class="svc-result-text">Asociația Arțarului – proiecte bine implementate, rezultate care merită să fie văzute.</span></p>
-      </div>
-    </section>
-
-    <section class="section ">
-      <div class="section-inner">
-        <h2 class="section-title">Cere o ofertă</h2>
+    <section class="section svc-form" id="formular">
+      <div class="section-inner svc-form-layout">
+        <div class="svc-form-lateral">
+          <h2 class="section-title">Cere o ofertă</h2>
+          <p class="svc-form-text">Spune-ne pe scurt unde te afli. Îți răspundem cu pașii concreți pentru situația ta, nu cu un mesaj tipizat.</p>
+          <h3 class="aside-label">Ce urmează</h3>
+          <ol class="svc-form-pasi">
+            <li>Primești un e-mail de confirmare că cererea a ajuns la noi.</li>
+            <li>Analizăm situația și revenim cu o direcție clară.</li>
+            <li>Stabilim, dacă e nevoie, o discuție pentru detalii.</li>
+          </ol>
+          <p class="svc-form-direct">Completează formularul: ajunge direct la echipa care se ocupă de serviciul ăsta, cu contextul deja atașat.</p>
+        </div>
+        <div class="svc-form-card">
 <form class="contact-form" id="contact-form" action="/api/contact" method="post" novalidate>
   <!-- Honeypot anti-spam: rămâne gol pentru oameni, ascuns vizual și de la screen readere -->
   <div class="hp-field" aria-hidden="true">
@@ -302,6 +330,7 @@
   </p>
 </form>
 
+        </div>
       </div>
     </section>
   </main>
@@ -344,6 +373,6 @@
     </div>
   </footer>
 
-<script src="../js/main.js?v=20260820"></script>
+<script src="../js/main.js?v=20260821"></script>
 </body>
 </html>

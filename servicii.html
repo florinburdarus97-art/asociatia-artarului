@@ -25,7 +25,7 @@
   <link rel="preload" href="assets/fonts/cormorant-garamond-600-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
-  <link rel="stylesheet" href="css/style.css?v=20260820">
+  <link rel="stylesheet" href="css/style.css?v=20260821">
   <!-- Subpagină: fără #intro (rulează doar pe homepage), deci fără scriptul de pre-render și fără GSAP. -->
   <script type="application/ld+json">
 {
@@ -247,36 +247,38 @@
           <h2 id="fam-acreditari" class="svc-family-title">Acreditări și autorizări</h2>
           <p class="svc-family-lead">Statutul care îți deschide finanțările și dreptul de a livra.</p>
         </header>
-        <div class="svc-index">
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-certificate"/></svg></span>
-          <h3 class="svc-title">Consultanță pentru acreditarea serviciilor sociale</h3>
-          <p class="svc-text">Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului.</p>
-          <a class="svc-card-link" href="servicii/acreditare-servicii-sociale.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-graduation-cap"/></svg></span>
-          <h3 class="svc-title">Autorizare cursuri ANC și acreditare MEN</h3>
-          <p class="svc-text">Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate.</p>
-          <a class="svc-card-link" href="servicii/autorizare-anc-men.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-medal"/></svg></span>
-          <h3 class="svc-title">Formare profesională autorizată ANC</h3>
-          <span class="svc-eticheta">În pregătire</span>
-          <p class="svc-text">Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului.</p>
-          <a class="svc-card-link" href="servicii/formare-anc.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        </div>
+        <ul class="svc-list">
+          <li class="svc-row">
+            <button class="svc-row-link" type="button" aria-haspopup="dialog" data-dialog="dlg-acreditare-servicii-sociale">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-certificate"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Consultanță pentru acreditarea serviciilor sociale</span>
+                <span class="svc-row-lead">Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </button>
+          </li>
+          <li class="svc-row">
+            <button class="svc-row-link" type="button" aria-haspopup="dialog" data-dialog="dlg-autorizare-anc-men">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-graduation-cap"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Autorizare cursuri ANC și acreditare MEN</span>
+                <span class="svc-row-lead">Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </button>
+          </li>
+          <li class="svc-row">
+            <button class="svc-row-link" type="button" aria-haspopup="dialog" data-dialog="dlg-formare-anc">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-medal"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Formare profesională autorizată ANC</span>
+                <span class="svc-row-lead">Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului.</span>
+              </span>
+              <span class="svc-row-capat"><span class="svc-row-eticheta">În pregătire</span><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </button>
+          </li>
+        </ul>
       </section>
 
       <section class="svc-family" aria-labelledby="fam-finantare" data-familie="finantare">
@@ -285,26 +287,28 @@
           <h2 id="fam-finantare" class="svc-family-title">Finanțare</h2>
           <p class="svc-family-lead">De la direcția de dezvoltare până la contractul de finanțare semnat.</p>
         </header>
-        <div class="svc-index">
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-hand-coins"/></svg></span>
-          <h3 class="svc-title">Consultanță în accesarea fondurilor nerambursabile</h3>
-          <p class="svc-text">Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului.</p>
-          <a class="svc-card-link" href="servicii/fonduri-nerambursabile.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-map-pin"/></svg></span>
-          <h3 class="svc-title">Strategii de dezvoltare locală</h3>
-          <p class="svc-text">O comunitate care își cunoaște prioritățile poate transforma nevoile locale în direcții concrete de dezvoltare.</p>
-          <a class="svc-card-link" href="servicii/strategii-dezvoltare-locala.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        </div>
+        <ul class="svc-list">
+          <li class="svc-row">
+            <button class="svc-row-link" type="button" aria-haspopup="dialog" data-dialog="dlg-fonduri-nerambursabile">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-hand-coins"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Consultanță în accesarea fondurilor nerambursabile</span>
+                <span class="svc-row-lead">Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </button>
+          </li>
+          <li class="svc-row">
+            <a class="svc-row-link" href="servicii/strategii-dezvoltare-locala.html">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-map-pin"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Strategii de dezvoltare locală</span>
+                <span class="svc-row-lead">O comunitate care își cunoaște prioritățile poate transforma nevoile locale în direcții concrete de dezvoltare.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+          </li>
+        </ul>
       </section>
 
       <section class="svc-family" aria-labelledby="fam-implementare" data-familie="implementare">
@@ -313,35 +317,38 @@
           <h2 id="fam-implementare" class="svc-family-title">Implementare</h2>
           <p class="svc-family-lead">Sprijin practic după semnătură, cât timp proiectul chiar se derulează.</p>
         </header>
-        <div class="svc-index">
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-note-pencil"/></svg></span>
-          <h3 class="svc-title">Documentație recrutare — posturi în afara organigramei</h3>
-          <p class="svc-text">Instituția dumneavoastră implementează un proiect cu finanțare europeană sau PNRR și are nevoie de personal suplimentar? Întocmim documentația necesară pentru înființarea posturilor în afara organigramei și pentru organizarea procedurii de recrutare.</p>
-          <a class="svc-card-link" href="servicii/documentatie-recrutare.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-path"/></svg></span>
-          <h3 class="svc-title">Implementare și management proiecte</h3>
-          <p class="svc-text">Obținerea finanțării este doar începutul. Implementarea corectă a proiectului presupune respectarea unor cerințe administrative, financiare și procedurale complexe, precum și gestionarea atentă a fiecărei etape.</p>
-          <a class="svc-card-link" href="servicii/implementare-management-proiecte.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-scales"/></svg></span>
-          <h3 class="svc-title">Asistență personalizată în implementare</h3>
-          <p class="svc-text">Nu aveți nevoie de consultanță pentru întregul proiect? Puteți beneficia de sprijin exact acolo unde este necesar.</p>
-          <a class="svc-card-link" href="servicii/asistenta-personalizata-implementare.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        </div>
+        <ul class="svc-list">
+          <li class="svc-row">
+            <a class="svc-row-link" href="servicii/documentatie-recrutare.html">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-note-pencil"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Documentație recrutare — posturi în afara organigramei</span>
+                <span class="svc-row-lead">Instituția dumneavoastră implementează un proiect cu finanțare europeană sau PNRR și are nevoie de personal suplimentar? Întocmim documentația necesară pentru înființarea posturilor în afara organigramei și pentru organizarea procedurii de recrutare.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+          </li>
+          <li class="svc-row">
+            <a class="svc-row-link" href="servicii/implementare-management-proiecte.html">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-path"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Implementare și management proiecte</span>
+                <span class="svc-row-lead">Obținerea finanțării este doar începutul. Implementarea corectă a proiectului presupune respectarea unor cerințe administrative, financiare și procedurale complexe, precum și gestionarea atentă a fiecărei etape.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+          </li>
+          <li class="svc-row">
+            <a class="svc-row-link" href="servicii/asistenta-personalizata-implementare.html">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-scales"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Asistență personalizată în implementare</span>
+                <span class="svc-row-lead">Nu aveți nevoie de consultanță pentru întregul proiect? Puteți beneficia de sprijin exact acolo unde este necesar.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+          </li>
+        </ul>
       </section>
 
       <section class="svc-family" aria-labelledby="fam-comunicare" data-familie="comunicare">
@@ -350,26 +357,28 @@
           <h2 id="fam-comunicare" class="svc-family-title">Comunicare și tehnologie</h2>
           <p class="svc-family-lead">Rezultatele proiectului, făcute vizibile. Procesele, făcute mai simple.</p>
         </header>
-        <div class="svc-index">
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-palette"/></svg></span>
-          <h3 class="svc-title">Identitate vizuală și promovare proiecte</h3>
-          <p class="svc-text">Un proiect european bine implementat merită să fie și bine comunicat.</p>
-          <a class="svc-card-link" href="servicii/identitate-vizuala-promovare.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        <article class="svc">
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-gear"/></svg></span>
-          <h3 class="svc-title">Digitalizare și automatizare</h3>
-          <p class="svc-text">Uneori, soluția nu este încă o procedură, încă un tabel sau încă un document. Este un sistem mai bun de lucru.</p>
-          <a class="svc-card-link" href="servicii/digitalizare-automatizare.html">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>
-        </div>
+        <ul class="svc-list">
+          <li class="svc-row">
+            <a class="svc-row-link" href="servicii/identitate-vizuala-promovare.html">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-palette"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Identitate vizuală și promovare proiecte</span>
+                <span class="svc-row-lead">Un proiect european bine implementat merită să fie și bine comunicat.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+          </li>
+          <li class="svc-row">
+            <a class="svc-row-link" href="servicii/digitalizare-automatizare.html">
+              <span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-gear"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">Digitalizare și automatizare</span>
+                <span class="svc-row-lead">Uneori, soluția nu este încă o procedură, încă un tabel sau încă un document. Este un sistem mai bun de lucru.</span>
+              </span>
+              <span class="svc-row-capat"><svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+          </li>
+        </ul>
       </section>
 <!-- END:carduri-servicii -->
       </div>
@@ -415,10 +424,94 @@
               <a href="tel:+40756576933"><svg class="fc-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-phone"/></svg><span>0756 576 933</span></a>
             </p>
           </div>
-          <a class="btn btn-primary btn-on-olive" href="contact.html">Solicită consultanță</a>
+          <a class="btn btn-primary btn-on-olive" href="cerere-consultanta.html">Solicită consultanță</a>
         </div>
       </div>
     </section>
+
+    <!-- Dialogurile serviciilor fără pagină proprie. -->
+<!-- BEGIN:modale-servicii — generat din servicii.json, nu edita -->
+      <dialog class="svc-modal" id="dlg-acreditare-servicii-sociale" aria-labelledby="dlg-acreditare-servicii-sociale-titlu">
+        <div class="svc-modal-panou">
+          <button class="svc-modal-x" type="button" data-inchide aria-label="Închide">&times;</button>
+          <span class="svc-modal-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-certificate"/></svg></span>
+          <h2 class="svc-modal-titlu" id="dlg-acreditare-servicii-sociale-titlu">Consultanță pentru acreditarea serviciilor sociale</h2>
+          <p class="svc-modal-lead">Suport complet de documentație pentru UAT-uri și ONG-uri, cu asistență directă în relația cu autoritățile, pe tot parcursul procesului.</p>
+          <p class="svc-modal-rezultat"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#i-check-circle"/></svg><span>Statutul de furnizor acreditat de servicii sociale.</span></p>
+          <h3 class="aside-label">Cum decurge</h3>
+          <ol class="steps-flow">
+            <li><strong>Evaluare inițială completă</strong></li>
+            <li><strong>Întocmirea documentației</strong></li>
+            <li><strong>Asistență în relația cu autoritățile</strong></li>
+            <li><strong>Suport continuu pentru menținerea conformității</strong></li>
+          </ol>
+          <div class="svc-modal-final">
+            <a class="btn btn-primary" href="cerere-consultanta.html?serviciu=acreditare-servicii-sociale">Cere o ofertă</a>
+            <button class="btn btn-contur" type="button" data-inchide>Închide</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog class="svc-modal" id="dlg-autorizare-anc-men" aria-labelledby="dlg-autorizare-anc-men-titlu">
+        <div class="svc-modal-panou">
+          <button class="svc-modal-x" type="button" data-inchide aria-label="Închide">&times;</button>
+          <span class="svc-modal-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-graduation-cap"/></svg></span>
+          <h2 class="svc-modal-titlu" id="dlg-autorizare-anc-men-titlu">Autorizare cursuri ANC și acreditare MEN</h2>
+          <p class="svc-modal-lead">Pregătim dosarul complet de autorizare și te însoțim până la inspecțiile finale. Miza: diplome recunoscute național și european, acces la piețe noi și credibilitate.</p>
+          <h3 class="aside-label">Cum decurge</h3>
+          <ol class="steps-flow">
+            <li><strong>Analiză preliminară de eligibilitate</strong></li>
+            <li><strong>Pregătirea dosarului, cu suport de curs și anexe</strong></li>
+            <li><strong>Sprijin în comunicarea cu ANC</strong></li>
+            <li><strong>Asistență la inspecții și evaluări</strong></li>
+          </ol>
+          <div class="svc-modal-final">
+            <a class="btn btn-primary" href="cerere-consultanta.html?serviciu=autorizare-anc-men">Cere o ofertă</a>
+            <button class="btn btn-contur" type="button" data-inchide>Închide</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog class="svc-modal" id="dlg-formare-anc" aria-labelledby="dlg-formare-anc-titlu">
+        <div class="svc-modal-panou">
+          <button class="svc-modal-x" type="button" data-inchide aria-label="Închide">&times;</button>
+          <span class="svc-modal-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-medal"/></svg></span>
+          <h2 class="svc-modal-titlu" id="dlg-formare-anc-titlu">Formare profesională autorizată ANC</h2>
+          <p class="svc-modal-lead">Livrăm programe de formare autorizate, cu sprijin complet pentru cursanți pe toată durata programului.</p>
+          <h3 class="aside-label">Ce cuprinde</h3>
+          <ul class="pill-list">
+            <li>Conținut actualizat</li>
+            <li>Formatori experți</li>
+            <li>Certificare ANC</li>
+            <li>Sprijin de la înscriere la diplomă</li>
+          </ul>
+          <div class="svc-modal-final">
+            <a class="btn btn-primary" href="cerere-consultanta.html?serviciu=formare-anc">Cere o ofertă</a>
+            <button class="btn btn-contur" type="button" data-inchide>Închide</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog class="svc-modal" id="dlg-fonduri-nerambursabile" aria-labelledby="dlg-fonduri-nerambursabile-titlu">
+        <div class="svc-modal-panou">
+          <button class="svc-modal-x" type="button" data-inchide aria-label="Închide">&times;</button>
+          <span class="svc-modal-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#i-hand-coins"/></svg></span>
+          <h2 class="svc-modal-titlu" id="dlg-fonduri-nerambursabile-titlu">Consultanță în accesarea fondurilor nerambursabile</h2>
+          <p class="svc-modal-lead">Identificăm sursele potrivite de finanțare, inclusiv fondurile de la bugetul de stat, și rămânem alături de tine pe toată durata proiectului.</p>
+          <h3 class="aside-label">Cum decurge</h3>
+          <ol class="steps-flow">
+            <li><strong>Identificarea oportunităților de finanțare</strong></li>
+            <li><strong>Elaborarea proiectelor</strong></li>
+            <li><strong>Sprijin complet în implementare</strong></li>
+          </ol>
+          <div class="svc-modal-final">
+            <a class="btn btn-primary" href="cerere-consultanta.html?serviciu=fonduri-nerambursabile">Cere o ofertă</a>
+            <button class="btn btn-contur" type="button" data-inchide>Închide</button>
+          </div>
+        </div>
+      </dialog>
+<!-- END:modale-servicii -->
+
   </main>
 
   <!-- ============================================================
@@ -465,6 +558,6 @@
 
   <!-- GSAP nu e necesar pe subpagini: servește doar intro-ul de pe homepage.
        main.js e sigur fără el (blocul de intro iese la lipsa #intro). -->
-  <script src="js/main.js?v=20260820"></script>
+  <script src="js/main.js?v=20260821"></script>
 </body>
 </html>

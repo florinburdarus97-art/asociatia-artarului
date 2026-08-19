@@ -82,39 +82,42 @@ export function prefixeaza(html, prefix) {
 }
 
 export function hrefCard(s) {
-  return s.stare === 'in-lucru' ? null : `servicii/${s.slug}.html`;
+  return s.stare === 'pagina' ? `servicii/${s.slug}.html` : null;
 }
 
-export function randCard(s) {
-  const href = hrefCard(s);
+/* Un rând de index. Serviciile cu pagină sunt legături; cele fără sunt
+   butoane care deschid dialogul generat mai jos, în aceeași pagină. */
+export function randRand(s) {
   const eticheta = s.eticheta
-    ? `\n          <span class="svc-eticheta">${esc(s.eticheta)}</span>`
+    ? `<span class="svc-row-eticheta">${esc(s.eticheta)}</span>`
     : '';
-  const corp = `
-          <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
-          <h3 class="svc-title">${esc(s.titluCard)}</h3>${eticheta}
-          <p class="svc-text">${esc(s.lead)}</p>`;
+  const corp = `<span class="svc-row-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
+              <span class="svc-row-corp">
+                <span class="svc-row-titlu">${esc(s.titluCard)}</span>
+                <span class="svc-row-lead">${esc(s.lead)}</span>
+              </span>
+              <span class="svc-row-capat">${eticheta}<svg class="svc-row-sageata" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>`;
 
-  if (!href) {
-    return `        <article class="svc svc--in-lucru">${corp}
-          <span class="svc-badge">În lucru</span>
-        </article>`;
-  }
+  const href = hrefCard(s);
+  const declansator = href
+    ? `<a class="svc-row-link" href="${href}">
+              ${corp}
+            </a>`
+    : `<button class="svc-row-link" type="button" aria-haspopup="dialog" data-dialog="dlg-${esc(s.slug)}">
+              ${corp}
+            </button>`;
 
-  return `        <article class="svc">${corp}
-          <a class="svc-card-link" href="${href}">
-            <span>Detalii</span>
-            <svg class="link-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </article>`;
+  return `          <li class="svc-row">
+            ${declansator}
+          </li>`;
 }
 
 export function randGrila(manifest) {
   return manifest.familii.map((f) => {
-    const carduri = manifest.servicii
+    const randuri = manifest.servicii
       .filter((s) => s.familie === f.id)
       .sort((a, b) => a.ordine - b.ordine)
-      .map(randCard)
+      .map(randRand)
       .join('\n');
 
     return `      <section class="svc-family" aria-labelledby="fam-${esc(f.id)}" data-familie="${esc(f.id)}">
@@ -123,11 +126,71 @@ export function randGrila(manifest) {
           <h2 id="fam-${esc(f.id)}" class="svc-family-title">${esc(f.titlu)}</h2>
           <p class="svc-family-lead">${esc(f.lead)}</p>
         </header>
-        <div class="svc-index">
-${carduri}
-        </div>
+        <ul class="svc-list">
+${randuri}
+        </ul>
       </section>`;
   }).join('\n\n');
+}
+
+/* Dialogul unui serviciu fără pagină proprie. Nu conține formular:
+   un singur widget Turnstile pe pagină, altfel captcha se strică.
+   Butonul duce la pagina de cerere, cu serviciul preselectat prin query. */
+export function randModal(s) {
+  const id = `dlg-${esc(s.slug)}`;
+  const bucati = [];
+
+  if (s.rezultat) {
+    bucati.push(`          <p class="svc-modal-rezultat"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#i-check-circle"/></svg><span>${esc(s.rezultat)}</span></p>`);
+  }
+
+  for (const par of s.context || []) {
+    bucati.push(`          <p class="svc-modal-text">${esc(par)}</p>`);
+  }
+
+  if (s.pasi && s.pasi.length) {
+    bucati.push(`          <h3 class="aside-label">Cum decurge</h3>
+          <ol class="steps-flow">
+${s.pasi.map((p) => `            <li><strong>${esc(p.titlu)}</strong>${p.text ? ' &mdash; ' + esc(p.text) : ''}</li>`).join('\n')}
+          </ol>`);
+  }
+
+  const livrabile = (s.livrabile || []).flatMap((g) => g.elemente || []);
+  if (livrabile.length) {
+    bucati.push(`          <h3 class="aside-label">Ce cuprinde</h3>
+          <ul class="pill-list">
+${livrabile.map((el) => `            <li>${esc(el)}</li>`).join('\n')}
+          </ul>`);
+  }
+
+  if (s.pentruCine && s.pentruCine.length) {
+    bucati.push(`          <h3 class="aside-label">Pentru cine</h3>
+          <ul class="pill-list">
+${s.pentruCine.map((el) => `            <li>${esc(el)}</li>`).join('\n')}
+          </ul>`);
+  }
+
+  return `      <dialog class="svc-modal" id="${id}" aria-labelledby="${id}-titlu">
+        <div class="svc-modal-panou">
+          <button class="svc-modal-x" type="button" data-inchide aria-label="Închide">&times;</button>
+          <span class="svc-modal-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
+          <h2 class="svc-modal-titlu" id="${id}-titlu">${esc(s.titluPagina)}</h2>
+          <p class="svc-modal-lead">${esc(s.lead)}</p>
+${bucati.join('\n')}
+          <div class="svc-modal-final">
+            <a class="btn btn-primary" href="cerere-consultanta.html?serviciu=${esc(s.slug)}">Cere o ofertă</a>
+            <button class="btn btn-contur" type="button" data-inchide>Închide</button>
+          </div>
+        </div>
+      </dialog>`;
+}
+
+export function randModale(manifest) {
+  const fara = manifest.servicii
+    .filter((s) => s.stare !== 'pagina')
+    .sort((a, b) => a.ordine - b.ordine);
+  if (!fara.length) return '      <!-- niciun serviciu fără pagină proprie -->';
+  return fara.map(randModal).join('\n\n');
 }
 
 const PARTIALS = ['head', 'nav', 'footer', 'sprite', 'formular'];
@@ -169,74 +232,139 @@ export function randPagina(s, manifest, partials) {
 
   const bucati = [];
 
-  // 1. breadcrumb
-  bucati.push(`    <nav class="breadcrumb" aria-label="Traseu">
-      <ol>
-        <li><a href="${P}index.html">Acasă</a></li>
-        <li><a href="${P}servicii.html">Servicii</a></li>
-        <li aria-current="page">${esc(s.titluCard)}</li>
-      </ol>
-    </nav>`);
+  /* 1. Antetul. Firul Ariadnei stă înăuntru, nu deasupra: altfel s-ar
+     aduna două degajări de navbar una peste alta. */
+  const rezultat = '';
 
-  // 2. head de pagină
-  bucati.push(`    <section class="page-head">
+  bucati.push(`    <section class="page-head svc-page-head">
+      <img class="page-head-leaf" src="${P}assets/img/leaf-sage-480.webp" width="260" height="241" alt="" loading="lazy" aria-hidden="true">
       <div class="section-inner">
-        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
+        <nav class="breadcrumb" aria-label="Traseu">
+          <ol>
+            <li><a href="${P}index.html">Acasă</a></li>
+            <li><a href="${P}servicii.html">Servicii</a></li>
+            <li aria-current="page">${esc(s.titluCard)}</li>
+          </ol>
+        </nav>
+        <span class="svc-page-ico" aria-hidden="true"><svg viewBox="0 0 256 256"><use href="#${esc(s.icon)}"/></svg></span>
         <h1 class="page-title">${esc(s.titluPagina)}</h1>
-        <p class="page-lead">${esc(s.lead)}</p>
+        <p class="page-lead">${esc(s.lead)}</p>${rezultat}
+        <p class="svc-page-cta">
+          <a class="btn btn-primary" href="#formular">Cere o ofertă</a>
+          <a class="btn btn-contur" href="${P}servicii.html">Toate serviciile</a>
+        </p>
       </div>
     </section>`);
 
-  // 3. pentru cine — doar dacă există
+  /* 2. Descrierea, alături de „pentru cine". Când n-avem cui face loc în
+     dreapta, coloana de text ocupă toată lățimea în loc să lase un gol. */
+  /* Fișa din dreapta ține rezultatul și publicul-țintă. Rezultatul a fost
+     scos din antet ca să nu apară de două ori pe aceeași pagină, iar coloana
+     nu mai rămâne goală pe serviciile fără `pentruCine`. */
+  const fisa = [];
+  if (s.rezultat) {
+    fisa.push(`              <h2 class="aside-label">Rezultatul</h2>
+              <p class="svc-fisa-rezultat"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#i-check-circle"/></svg><span>${esc(s.rezultat)}</span></p>`);
+  }
   if (s.pentruCine && s.pentruCine.length) {
-    bucati.push(bloc('', `        <h2 class="aside-label">Pentru cine</h2>
-        <ul class="pill-list">
-${s.pentruCine.map((x) => `          <li>${esc(x)}</li>`).join('\n')}
-        </ul>`));
+    fisa.push(`              <h2 class="aside-label">Pentru cine</h2>
+              <ul class="pill-list">
+${s.pentruCine.map((x) => `                <li>${esc(x)}</li>`).join('\n')}
+              </ul>`);
   }
-
-  // 4. context
+  const areAside = fisa.length > 0;
   if (s.context && s.context.length) {
-    bucati.push(bloc('', s.context.map((par) => `        <p class="svc-detail-text">${esc(par)}</p>`).join('\n')));
+    const aside = areAside
+      ? `
+          <aside class="svc-detail-aside">
+            <div class="svc-fisa">
+${fisa.join('\n')}
+            </div>
+          </aside>`
+      : '';
+    bucati.push(`    <section class="section">
+      <div class="section-inner">
+        <div class="svc-detail${areAside ? '' : ' svc-detail--singur'}">
+          <div class="svc-detail-copy">
+${s.context.map((par) => `            <p class="svc-detail-text">${esc(par)}</p>`).join('\n')}
+          </div>${aside}
+        </div>
+      </div>
+    </section>`);
+  } else if (areAside) {
+    bucati.push(`    <section class="section">
+      <div class="section-inner">
+        <div class="svc-fisa svc-fisa--lata">
+${fisa.join('\n')}
+        </div>
+      </div>
+    </section>`);
   }
 
-  // 5. pași — doar dacă există
-  if (s.pasi && s.pasi.length) {
-    bucati.push(bloc('tint', `        <h2 class="section-title">Cum decurge</h2>
-        <ol class="steps-flow">
-${s.pasi.map((pas) => `          <li><strong>${esc(pas.titlu)}</strong>${pas.text ? ' — ' + esc(pas.text) : ''}</li>`).join('\n')}
-        </ol>`));
-  }
-
-  // 6. livrabile, grupate
+  // 3. Livrabilele, pe grupuri, în coloane — nu o stivă de liste late.
   if (s.livrabile && s.livrabile.length) {
-    const grupuri = s.livrabile.map((g) => {
-      const titlu = g.titlu ? `        <h3 class="aside-label">${esc(g.titlu)}</h3>\n` : '';
-      return titlu + `        <ul class="pill-list">
-${g.elemente.map((el) => `          <li>${esc(el)}</li>`).join('\n')}
-        </ul>`;
-    }).join('\n');
-    bucati.push(bloc('', `        <h2 class="section-title">Ce cuprinde</h2>\n${grupuri}`));
+    const grupuri = s.livrabile.map((g) => `          <div class="svc-livrabil">
+${g.titlu ? `            <h3 class="aside-label">${esc(g.titlu)}</h3>\n` : ''}            <ul class="pill-list">
+${g.elemente.map((el) => `              <li>${esc(el)}</li>`).join('\n')}
+            </ul>
+          </div>`).join('\n');
+    bucati.push(`    <section class="section tint">
+      <div class="section-inner">
+        <h2 class="section-title">Ce cuprinde</h2>
+        <div class="svc-livrabile">
+${grupuri}
+        </div>
+      </div>
+    </section>`);
   }
 
-  // 7. FAQ — doar dacă există
+  // 4. Pașii — doar dacă serviciul chiar are pași descriși.
+  if (s.pasi && s.pasi.length) {
+    bucati.push(`    <section class="section">
+      <div class="section-inner">
+        <h2 class="section-title">Cum decurge</h2>
+        <ol class="steps-flow">
+${s.pasi.map((pas) => `          <li><strong>${esc(pas.titlu)}</strong>${pas.text ? ' &mdash; ' + esc(pas.text) : ''}</li>`).join('\n')}
+        </ol>
+      </div>
+    </section>`);
+  }
+
+  // 5. Întrebări frecvente.
   if (s.faq && s.faq.length) {
-    bucati.push(bloc('', `        <h2 class="section-title">Întrebări frecvente</h2>
+    bucati.push(`    <section class="section">
+      <div class="section-inner">
+        <h2 class="section-title">Întrebări frecvente</h2>
         <div class="faq-lista">
 ${s.faq.map((q) => `          <details>
             <summary>${esc(q.intrebare)}</summary>
             <p>${esc(q.raspuns)}</p>
           </details>`).join('\n')}
-        </div>`));
+        </div>
+      </div>
+    </section>`);
   }
 
-  // 8. rezultatul
-  if (s.rezultat) {
-    bucati.push(bloc('', `        <p class="svc-result"><span class="svc-result-text">${esc(s.rezultat)}</span></p>`));
-  }
-
-  // 9. formular
-  bucati.push(bloc('', `        <h2 class="section-title">Cere o ofertă</h2>\n${formular}`));
+  /* 6. Formularul, într-o coloană îngustă lângă un context scurt —
+     nu o bandă pe toată lățimea ecranului. */
+  bucati.push(`    <section class="section svc-form" id="formular">
+      <div class="section-inner svc-form-layout">
+        <div class="svc-form-lateral">
+          <h2 class="section-title">Cere o ofertă</h2>
+          <p class="svc-form-text">Spune-ne pe scurt unde te afli. Îți răspundem cu pașii concreți pentru situația ta, nu cu un mesaj tipizat.</p>
+          <h3 class="aside-label">Ce urmează</h3>
+          <ol class="svc-form-pasi">
+            <li>Primești un e-mail de confirmare că cererea a ajuns la noi.</li>
+            <li>Analizăm situația și revenim cu o direcție clară.</li>
+            <li>Stabilim, dacă e nevoie, o discuție pentru detalii.</li>
+          </ol>
+          <p class="svc-form-direct">Completează formularul: ajunge direct la echipa care se ocupă de serviciul ăsta, cu contextul deja atașat.</p>
+        </div>
+        <div class="svc-form-card">
+${formular}
+        </div>
+      </div>
+    </section>`);
 
   // JSON-LD
   const ld = [
@@ -275,7 +403,7 @@ ${prefixeaza(partials.nav, P)}
 ${bucati.join('\n\n')}
   </main>
 ${prefixeaza(partials.footer, P)}
-<script src="${P}js/main.js?v=20260820"></script>
+<script src="${P}js/main.js?v=20260821"></script>
 </body>
 </html>
 `;
@@ -316,7 +444,7 @@ ${formular}
     </section>
   </main>
 ${partials.footer}
-<script src="js/main.js?v=20260820"></script>
+<script src="js/main.js?v=20260821"></script>
 </body>
 </html>
 `;
@@ -416,10 +544,12 @@ export function scrieTot() {
   fs.writeFileSync(path.join(AICI, 'cerere-consultanta.html'), randPaginaCerere(manifest, partials));
   scrise.push('cerere-consultanta.html');
 
-  // 4. grila din hub, doar între markere
+  // 4. hubul: indexul de rânduri și dialogurile, fiecare între markerele lui
   const caleHub = path.join(AICI, 'servicii.html');
-  fs.writeFileSync(caleHub, injecteazaIntreMarcaje(
-    fs.readFileSync(caleHub, 'utf8'), 'carduri-servicii', randGrila(manifest)));
+  let hub = fs.readFileSync(caleHub, 'utf8');
+  hub = injecteazaIntreMarcaje(hub, 'carduri-servicii', randGrila(manifest));
+  hub = injecteazaIntreMarcaje(hub, 'modale-servicii', randModale(manifest));
+  fs.writeFileSync(caleHub, hub);
   scrise.push('servicii.html');
 
   // 5. sitemap, doar între markere
