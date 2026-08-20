@@ -9,6 +9,10 @@ import { fileURLToPath } from 'node:url';
 
 const AICI = path.dirname(fileURLToPath(import.meta.url));
 
+/* Cheia publică Turnstile. Nu e secret — stă în HTML, o vede orice vizitator.
+   Secretul pereche stă în Vercel, ca TURNSTILE_SECRET_KEY. */
+const TURNSTILE_SITEKEY = '0x4AAAAAAEWjzWV1XWOjNvOc';
+
 export function incarcaManifest(cale = path.join(AICI, 'servicii.json')) {
   return JSON.parse(fs.readFileSync(cale, 'utf8'));
 }
@@ -225,7 +229,7 @@ export function randPagina(s, manifest, partials) {
   const formular = prefixeaza(randFormular(partials.formular, {
     formular: 'cerere',
     redirect: `/servicii/${s.slug}.html`,
-    sitekey: '{{TURNSTILE_SITEKEY}}',
+    sitekey: TURNSTILE_SITEKEY,
     serviciu: s.slug,
     manifest
   }), P);
@@ -413,7 +417,7 @@ export function randPaginaCerere(manifest, partials) {
   const formular = randFormular(partials.formular, {
     formular: 'cerere',
     redirect: '/cerere-consultanta.html',
-    sitekey: '{{TURNSTILE_SITEKEY}}',
+    sitekey: TURNSTILE_SITEKEY,
     serviciu: null,
     manifest
   });
