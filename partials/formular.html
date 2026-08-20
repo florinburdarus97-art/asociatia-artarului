@@ -1,0 +1,97 @@
+<form class="contact-form" id="contact-form" action="/api/contact" method="post" novalidate>
+  <!-- Honeypot anti-spam: rămâne gol pentru oameni, ascuns vizual și de la screen readere -->
+  <div class="hp-field" aria-hidden="true">
+    <label for="website">Nu completa acest câmp</label>
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+  </div>
+
+  <input type="hidden" name="formular" value="{{FORMULAR}}">
+  <input type="hidden" name="redirect" value="{{REDIRECT}}">
+  <input type="hidden" name="ts" id="form-ts" value="">
+
+  <!-- VARIANTA:cerere -->
+  <div class="field">
+    <label class="field-label" for="serviciu">Serviciul dorit <span class="field-req" aria-hidden="true">*</span></label>
+    <select class="field-input" id="serviciu" name="serviciu" required aria-describedby="err-serviciu">
+      <option value="">Alege serviciul</option>
+<!-- BEGIN:optiuni-serviciu — generat din servicii.json, nu edita -->
+<!-- END:optiuni-serviciu -->
+    </select>
+    <span class="field-error" id="err-serviciu" data-error-for="serviciu"></span>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label class="field-label" for="tipEntitate">Tipul entității <span class="field-req" aria-hidden="true">*</span></label>
+      <select class="field-input" id="tipEntitate" name="tipEntitate" required aria-describedby="err-tipEntitate">
+        <option value="">Alege</option>
+        <option value="UAT">UAT</option>
+        <option value="ONG">ONG</option>
+        <option value="furnizor privat">Furnizor privat</option>
+        <option value="persoană fizică">Persoană fizică</option>
+      </select>
+      <span class="field-error" id="err-tipEntitate" data-error-for="tipEntitate"></span>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="localitate">Localitatea <span class="field-req" aria-hidden="true">*</span></label>
+      <input class="field-input" type="text" id="localitate" name="localitate"
+             required minlength="2" aria-describedby="err-localitate">
+      <span class="field-error" id="err-localitate" data-error-for="localitate"></span>
+    </div>
+  </div>
+  <!-- /VARIANTA:cerere -->
+
+  <div class="field">
+    <label class="field-label" for="nume">Nume <span class="field-req" aria-hidden="true">*</span></label>
+    <input class="field-input" type="text" id="nume" name="nume" autocomplete="name"
+           required minlength="2" aria-describedby="err-nume">
+    <span class="field-error" id="err-nume" data-error-for="nume"></span>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label class="field-label" for="telefon">Telefon <span class="field-req" aria-hidden="true">*</span></label>
+      <input class="field-input" type="tel" id="telefon" name="telefon" autocomplete="tel"
+             required inputmode="tel" aria-describedby="err-telefon">
+      <span class="field-error" id="err-telefon" data-error-for="telefon"></span>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="email">Email <span class="field-req" aria-hidden="true">*</span></label>
+      <input class="field-input" type="email" id="email" name="email" autocomplete="email"
+             required aria-describedby="err-email">
+      <span class="field-error" id="err-email" data-error-for="email"></span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label" for="mesaj">Mesaj <span class="field-req" aria-hidden="true">*</span></label>
+    <textarea class="field-input field-textarea" id="mesaj" name="mesaj" rows="5"
+              required minlength="10" aria-describedby="err-mesaj"
+              placeholder="Spune-ne pe scurt despre proiectul sau nevoia ta..."></textarea>
+    <span class="field-error" id="err-mesaj" data-error-for="mesaj"></span>
+  </div>
+
+  <!-- VARIANTA:cerere -->
+  <div class="field field-check">
+    <label class="check-label" for="consimtamant">
+      <input type="checkbox" id="consimtamant" name="consimtamant" value="da" required aria-describedby="err-consimtamant">
+      <span>Sunt de acord să fiu contactat folosind datele furnizate, exclusiv pentru a primi un răspuns la această solicitare. <span class="field-req" aria-hidden="true">*</span></span>
+    </label>
+    <span class="field-error" id="err-consimtamant" data-error-for="consimtamant"></span>
+  </div>
+  <!-- /VARIANTA:cerere -->
+
+  <div class="cf-turnstile" data-sitekey="{{TURNSTILE_SITEKEY}}" data-language="ro" data-appearance="interaction-only"></div>
+
+  <button class="btn btn-primary form-submit" type="submit">
+    <span class="form-submit-label">Trimite mesajul</span>
+    <svg class="form-submit-ico" viewBox="0 0 256 256" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+  </button>
+
+  <p class="form-consent">
+    Prin trimiterea mesajului ești de acord să te contactăm folosind datele furnizate,
+    exclusiv pentru a răspunde solicitării tale. Formularul e protejat antispam prin Cloudflare Turnstile.
+  </p>
+</form>

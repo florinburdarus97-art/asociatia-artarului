@@ -2129,3 +2129,546 @@ img.statement-leaf {
   .press-poster-link:hover { transform: none; }
   .press-dl:hover .link-ico { transform: none; }
 }
+
+/* ---------- 46. Formular: bifă de consimțământ (varianta „cerere") ---------- */
+.field-check { gap: 0.5rem; }
+.check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: var(--text-sm);
+  color: var(--charcoal-soft);
+  cursor: pointer;
+}
+.check-label input[type="checkbox"] {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15em;
+  accent-color: var(--olive);
+}
+
+/* ---------- 47. Hub de servicii: familii, index de rânduri ---------- */
+.svc-family {
+  position: relative;
+  isolation: isolate;
+}
+.svc-family + .svc-family { margin-top: var(--space-8); }
+
+.svc-family-head {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  margin-bottom: var(--space-5);
+}
+.svc-family-title {
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.9rem);
+  line-height: 1.08;
+}
+.svc-family-lead {
+  margin-top: var(--space-2);
+  color: var(--charcoal-soft);
+  max-width: 48ch;
+}
+
+/* Index, nu galerie: rânduri pe linii subțiri. Cardul `.svc` (secțiunea 11,
+   bento-ul de pe homepage) rămâne neatins — aici nu mai e folosit deloc.
+   Rândul se citește ca un cuprins, iar înălțimea lui nu depinde de cât de
+   lung e lead-ul vecinului, deci nu apare spațiu mort. */
+.svc-list {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.svc-row { border-bottom: 1px solid var(--line); }
+
+.svc-row-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.85rem, 2vw, 1.5rem);
+  width: 100%;
+  padding: clamp(0.95rem, 1.5vw, 1.3rem) clamp(0.4rem, 1.2vw, 0.9rem);
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.svc-row-link:hover {
+  background: color-mix(in oklab, var(--sage), transparent 88%);
+}
+.svc-row-link:focus-visible {
+  outline: 2px solid var(--olive);
+  outline-offset: 2px;
+}
+
+.svc-row-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--sage), var(--cream) 58%);
+  color: var(--olive-deep);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.svc-row-ico svg { width: 21px; height: 21px; }
+.svc-row-link:hover .svc-row-ico { transform: rotate(-6deg) scale(1.07); }
+
+.svc-row-corp { display: block; min-width: 0; }
+.svc-row-titlu {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(1.08rem, 1rem + 0.35vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--charcoal);
+  text-wrap: balance;
+}
+.svc-row-lead {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--charcoal-soft);
+}
+
+.svc-row-capat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: none;
+}
+.svc-row-sageata {
+  width: 20px;
+  height: 20px;
+  color: var(--olive);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.svc-row-link:hover .svc-row-sageata { transform: translateX(4px); }
+
+/* Titlul și descrierea stau alături pe ecrane late: fără coloană de text
+   de 1200px și fără gol în dreapta. Sub 900px se stivuiesc. */
+@media (min-width: 900px) {
+  .svc-row-corp {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.95fr) 1.25fr;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    align-items: baseline;
+  }
+  .svc-row-lead { margin-top: 0; }
+}
+@media (max-width: 560px) {
+  .svc-row-lead {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Frunza ca ritm: un singur asset, patru așezări diferite pe familie.
+   Ornamentul stă sub conținut (z-index 0, izolat de .svc-family) și nu
+   prinde click. */
+.svc-family-leaf {
+  position: absolute;
+  z-index: 0;
+  top: -2.5rem;
+  right: -3rem;
+  width: clamp(150px, 20vw, 290px);
+  height: auto;
+  opacity: 0.15;
+  pointer-events: none;
+  user-select: none;
+}
+.svc-family:nth-of-type(2) .svc-family-leaf {
+  transform: rotate(46deg) scaleX(-1);
+  opacity: 0.12;
+}
+.svc-family:nth-of-type(3) .svc-family-leaf {
+  transform: rotate(-22deg);
+  width: clamp(130px, 16vw, 230px);
+  top: auto;
+  bottom: -2rem;
+}
+.svc-family:nth-of-type(4) .svc-family-leaf {
+  transform: rotate(115deg);
+  opacity: 0.10;
+}
+@media (max-width: 820px) { .svc-family-leaf { display: none; } }
+
+/* ---------- 48. Comunicare și tehnologie: singura bandă închisă ---------- */
+.svc-family[data-familie="comunicare"] {
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 3vw, 2.5rem);
+  border-radius: var(--radius-surface);
+  /* Fundalul e adânc deliberat: măsurat pe randare reală, o variantă mai
+     deschisă cobora sub 4.5:1 pe textul secundar. S-a adâncit fundalul,
+     nu s-a deschis textul. */
+  background:
+    radial-gradient(120% 90% at 12% 0%, color-mix(in oklab, var(--sage), transparent 84%), transparent 58%),
+    linear-gradient(152deg,
+      color-mix(in oklab, var(--olive), var(--charcoal) 86%),
+      color-mix(in oklab, var(--olive-deep), var(--charcoal) 96%));
+}
+.svc-family[data-familie="comunicare"] .svc-family-title { color: var(--cream); }
+.svc-family[data-familie="comunicare"] .svc-family-lead  { color: color-mix(in oklab, var(--cream), transparent 22%); }
+.svc-family[data-familie="comunicare"] .svc-family-leaf  { opacity: 0.18; }
+
+.svc-family[data-familie="comunicare"] .svc-list { border-top-color: color-mix(in oklab, var(--cream), transparent 76%); }
+.svc-family[data-familie="comunicare"] .svc-row  { border-bottom-color: color-mix(in oklab, var(--cream), transparent 76%); }
+.svc-family[data-familie="comunicare"] .svc-row-titlu { color: var(--cream); }
+.svc-family[data-familie="comunicare"] .svc-row-lead  { color: color-mix(in oklab, var(--cream), transparent 18%); }
+.svc-family[data-familie="comunicare"] .svc-row-sageata { color: var(--champagne); }
+.svc-family[data-familie="comunicare"] .svc-row-ico {
+  background: color-mix(in oklab, var(--cream), transparent 82%);
+  color: var(--champagne);
+}
+.svc-family[data-familie="comunicare"] .svc-row-link:hover {
+  background: color-mix(in oklab, var(--cream), transparent 90%);
+}
+.svc-family[data-familie="comunicare"] .svc-row-link:focus-visible {
+  outline-color: var(--champagne);
+}
+/* ---------- 49. Etichetă de card, breadcrumb, acordeon FAQ ---------- */
+.svc-row-eticheta {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.25em 0.75em;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--champagne), var(--cream) 18%);
+  color: var(--charcoal-soft);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* .nav e fixed (secțiunea 4) — fără clearance propriu, breadcrumb-ul
+   (primul copil din <main> pe paginile de serviciu) s-ar așeza sub bara
+   de navigare, nu după ea. Același idiom ca .bio-aside/.contact-coords
+   (secțiunile 22, 29): calc(--nav-h + spațiere). */
+.breadcrumb { padding-top: calc(var(--nav-h) + var(--space-4)); }
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--charcoal-soft);
+}
+.breadcrumb li + li::before { content: "/"; margin-right: 0.5rem; opacity: 0.45; }
+.breadcrumb a { color: inherit; text-decoration: none; }
+.breadcrumb a:hover { color: var(--olive); }
+
+.faq-lista details { border-bottom: 1px solid var(--line); }
+.faq-lista summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.faq-lista summary::-webkit-details-marker { display: none; }
+.faq-lista summary::after {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--olive);
+  border-bottom: 2px solid var(--olive);
+  transform: rotate(45deg);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-lista details[open] summary::after { transform: rotate(-135deg); }
+.faq-lista details > p {
+  max-width: 65ch;
+  padding-bottom: var(--space-4);
+  color: var(--charcoal-soft);
+}
+
+/* ---------- 50. Evidențierea „Servicii" în navigare (spec §4.6) ----------
+   Aceeași tehnică de „sheen" ca .btn:hover::after (secțiunea 38), dar pe
+   ::before, ca să nu intre în conflict cu sublinierea de pe ::after
+   (regula `.nav-links a:not(.nav-cta)::after`, secțiunea 38). Fără
+   overflow:hidden pe ancoră: acea sublinieire iese sub cutie (bottom:-4px)
+   și ar fi tăiată. Gradientul e deja transparent la margini, deci nu are
+   nevoie de decupaj ca să nu „plutească". */
+.nav-link-accent { position: relative; }
+.nav-link-accent::before {
+  content: "";
+  position: absolute;
+  inset: -0.3em -0.5em;
+  background: linear-gradient(115deg,
+    transparent 32%,
+    color-mix(in oklab, var(--olive), transparent 75%) 48%,
+    transparent 62%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.nav-link-accent:hover::before {
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(120%);
+}
+.nav-link-accent[aria-current="page"]::before { content: none; }
+@media (prefers-reduced-motion: reduce) {
+  .nav-link-accent::before { content: none; }
+}
+
+/* ---------- 51. Pagina de serviciu: antet, fișă, livrabile, formular ----------
+   Anatomia veche (nouă benzi pe toată lățimea) golea pagina serviciilor cu
+   text puțin. Aici pagina se sprijină pe ritmul deja folosit în Despre și
+   Servicii: `.svc-detail` pe două coloane, plus un formular încadrat, nu o
+   bandă lată. */
+
+/* Buton secundar. `.btn` (secțiunea 3) dă forma; aici doar conturul. */
+.btn-contur {
+  background: transparent;
+  color: var(--olive-deep);
+  border: 1px solid color-mix(in oklab, var(--olive), transparent 55%);
+}
+.btn-contur:hover {
+  background: color-mix(in oklab, var(--sage), transparent 86%);
+  border-color: var(--olive);
+}
+
+/* Firul Ariadnei intră în antet. `.breadcrumb` are degajare proprie de
+   navbar (secțiunea 49) pentru cazul în care e primul copil din <main>;
+   înăuntrul lui `.page-head`, care are deja degajarea, se anulează. */
+.svc-page-head .breadcrumb { padding-top: 0; margin-bottom: var(--space-4); }
+.svc-page-head .breadcrumb ol {
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+.svc-page-ico {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--sage), var(--cream) 58%);
+  color: var(--olive-deep);
+}
+.svc-page-ico svg { width: 28px; height: 28px; }
+
+.svc-fisa-rezultat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--olive-deep);
+}
+.svc-fisa-rezultat svg { flex: none; width: 20px; height: 20px; margin-top: 3px; }
+.svc-fisa .aside-label + .svc-fisa-rezultat { margin-top: 0; }
+.svc-fisa .pill-list + .aside-label,
+.svc-fisa .svc-fisa-rezultat + .aside-label { margin-top: var(--space-5); }
+.svc-fisa--lata { max-width: 44rem; }
+
+/* Antetul are deja spațiu jos; prima secțiune nu-l mai dublează. */
+.svc-page-head + .section { padding-top: var(--space-5); }
+
+.svc-page-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+/* Fără coloană dreaptă, textul nu mai lasă jumătate de ecran gol. */
+.svc-detail--singur { grid-template-columns: 1fr; }
+.svc-detail--singur .svc-detail-text { max-width: 68ch; }
+.svc-detail-copy > .svc-detail-text + .svc-detail-text { margin-top: var(--space-4); }
+
+.svc-fisa {
+  padding: var(--space-5);
+  background: color-mix(in oklab, var(--champagne), var(--cream) 52%);
+  border-radius: var(--radius-surface);
+}
+@media (min-width: 821px) {
+  .svc-fisa { position: sticky; top: calc(var(--nav-h) + var(--space-4)); }
+}
+
+/* Livrabilele pe coloane: grupurile se așază unul lângă altul cât încap,
+   în loc să se stivuiască pe toată lățimea. */
+.svc-livrabile {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: var(--space-5) var(--space-6);
+}
+.svc-livrabil > .aside-label { margin-bottom: var(--space-3); }
+
+/* Formularul, încadrat lângă un context scurt. */
+.svc-form-layout {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: var(--space-6) var(--space-8);
+  align-items: start;
+}
+.svc-form-text { color: var(--charcoal-soft); max-width: 40ch; margin-bottom: var(--space-5); }
+
+.svc-form-pasi {
+  list-style: none;
+  counter-reset: pas;
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.svc-form-pasi li {
+  counter-increment: pas;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  font-size: var(--text-sm);
+  color: var(--charcoal-soft);
+}
+.svc-form-pasi li::before {
+  content: counter(pas);
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--sage), var(--cream) 45%);
+  color: var(--olive-deep);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.svc-form-direct { font-size: var(--text-sm); color: var(--charcoal-soft); }
+.svc-form-direct a { color: var(--olive-deep); text-decoration: none; border-bottom: 1px solid var(--line); }
+.svc-form-direct a:hover { border-color: var(--olive); }
+
+.svc-form-card {
+  padding: clamp(1.4rem, 3vw, 2.25rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  box-shadow: 0 26px 60px -44px var(--shadow-tint);
+}
+
+@media (max-width: 900px) {
+  .svc-form-layout { grid-template-columns: 1fr; }
+}
+
+/* ---------- 52. Dialogul serviciilor fără pagină proprie ----------
+   Serviciile cu prea puțin conținut pentru o pagină întreagă se deschid
+   într-un dialog nativ, în hub. Fără formular înăuntru: un singur widget
+   Turnstile pe pagină, altfel verificarea se strică. Butonul duce la
+   pagina de cerere, cu serviciul preselectat din query. */
+.svc-modal {
+  /* Centrarea nu vine de la browser: resetul global (secțiunea 2) pune
+     `margin: 0` pe tot, inclusiv pe <dialog>, iar regula autorului bate
+     stilul implicit al agentului. Fără cele patru linii de mai jos,
+     dialogul se lipește în colțul din stânga sus. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: min(680px, 92vw);
+  max-width: none;
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--charcoal);
+  overflow: visible;
+}
+.svc-modal::backdrop {
+  background: color-mix(in oklab, var(--charcoal), transparent 42%);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.svc-modal-panou {
+  position: relative;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  padding: clamp(1.5rem, 4vw, 2.6rem);
+  background: var(--surface);
+  border-radius: var(--radius-surface);
+  box-shadow: 0 44px 90px -46px color-mix(in oklab, var(--charcoal), transparent 40%);
+}
+.svc-modal[open] .svc-modal-panou {
+  animation: svc-modal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes svc-modal-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.svc-modal-x {
+  position: absolute;
+  top: clamp(0.75rem, 2vw, 1.1rem);
+  right: clamp(0.75rem, 2vw, 1.1rem);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: color-mix(in oklab, var(--champagne), var(--cream) 40%);
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--charcoal-soft);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.svc-modal-x:hover { background: color-mix(in oklab, var(--rose), var(--cream) 55%); color: var(--charcoal); }
+
+.svc-modal-ico {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--sage), var(--cream) 58%);
+  color: var(--olive-deep);
+}
+.svc-modal-ico svg { width: 24px; height: 24px; }
+
+.svc-modal-titlu {
+  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2rem);
+  line-height: 1.15;
+  padding-right: 2.5rem;
+  text-wrap: balance;
+}
+.svc-modal-lead { margin-top: var(--space-3); color: var(--charcoal-soft); }
+.svc-modal-text { margin-top: var(--space-3); color: var(--charcoal-soft); }
+.svc-modal-rezultat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-top: var(--space-4);
+  font-weight: 600;
+  color: var(--olive-deep);
+}
+.svc-modal-rezultat svg { flex: none; width: 20px; height: 20px; margin-top: 2px; }
+.svc-modal-panou .aside-label { margin-top: var(--space-5); }
+.svc-modal-final {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-modal[open] .svc-modal-panou { animation: none; }
+}

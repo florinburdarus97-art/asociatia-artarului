@@ -280,8 +280,8 @@
 /* ==========================================================================
    S5 - formular de contact: validare client + trimitere asincronă (fetch).
    Progressive enhancement: fără JS, formularul face POST normal către
-   contact.php, care redirecționează la #mesaj-trimis / #mesaj-eroare
-   (afișate cu :target). Cu JS, rămânem pe pagină și dăm feedback inline.
+   /api/contact, care răspunde cu 303 redirect la originea cererii cu
+   #mesaj-trimis / #mesaj-eroare. Cu JS, rămânem pe pagină și dăm feedback inline.
    ========================================================================== */
 (function () {
   'use strict';
@@ -293,11 +293,51 @@
   var noteErr = document.getElementById('mesaj-eroare');
   var submit  = form.querySelector('.form-submit');
 
+  /* Paragraful din #mesaj-eroare primește textul specific trimis de server
+     (erori.general); păstrăm marcajul implicit ca să-l putem restaura când
+     nu avem un mesaj specific (M4). */
+  var noteErrParagraf = noteErr ? noteErr.querySelector('p') : null;
+  var noteErrHtmlImplicit = noteErrParagraf ? noteErrParagraf.innerHTML : '';
+
+  var campTs = document.getElementById('form-ts');
+  if (campTs) campTs.value = String(Date.now());
+
+  /* Regulile de mai jos trebuie să rămână byte-identice cu api/_validare.js
+     (mesaje + praguri + regexuri) — altfel userul vede text diferit după cum
+     îl respinge stratul client sau cel server. */
   var reguli = {
-    nume:    function (v) { return v.trim().length >= 2 ? '' : 'Te rugăm să îți scrii numele.'; },
-    telefon: function (v) { return /^[0-9+()\s.-]{6,}$/.test(v.trim()) ? '' : 'Adaugă un număr de telefon valid.'; },
-    email:   function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Adresa de email nu pare validă.'; },
-    mesaj:   function (v) { return v.trim().length >= 10 ? '' : 'Scrie-ne câteva detalii (minim 10 caractere).'; }
+    serviciu:    function (v) { return v ? '' : 'Alege serviciul dorit.'; },
+    tipEntitate: function (v) { return v ? '' : 'Alege tipul entității.'; },
+    localitate:  function (v) {
+      v = v.trim();
+      if (v.length < 2) return 'Adaugă localitatea.';
+      if (v.length > 120) return 'Localitatea este prea lungă (maxim 120 de caractere).';
+      return '';
+    },
+    nume:        function (v) {
+      v = v.trim();
+      if (v.length < 2) return 'Te rugăm să îți scrii numele.';
+      if (v.length > 120) return 'Numele este prea lung (maxim 120 de caractere).';
+      return '';
+    },
+    telefon:     function (v) {
+      v = v.trim();
+      if (!/^[0-9+()\s.-]{6,}$/.test(v)) return 'Adaugă un număr de telefon valid.';
+      if (v.length > 40) return 'Numărul de telefon este prea lung (maxim 40 de caractere).';
+      return '';
+    },
+    email:       function (v) {
+      v = v.trim();
+      if (!/^[^\s@,<>;"']+@[^\s@,<>;"']+\.[^\s@,<>;"']{2,}$/.test(v)) return 'Adresa de email nu pare validă.';
+      if (v.length > 190) return 'Adresa de email este prea lungă (maxim 190 de caractere).';
+      return '';
+    },
+    mesaj:       function (v) {
+      v = v.trim();
+      if (v.length < 10) return 'Scrie-ne câteva detalii (minim 10 caractere).';
+      if (v.length > 5000) return 'Mesajul este prea lung (maxim 5000 de caractere).';
+      return '';
+    }
   };
 
   function eroareCamp(nume, mesaj) {
@@ -337,12 +377,22 @@
 
   function valideaza() {
     var primulInvalid = null;
+
     Object.keys(reguli).forEach(function (nume) {
       var input = form.elements[nume];
-      var mesaj = reguli[nume](input ? input.value : '');
+      if (!input) return;                 // câmp absent în varianta curentă a formularului
+      var mesaj = reguli[nume](input.value);
       eroareCamp(nume, mesaj);
       if (mesaj && !primulInvalid) primulInvalid = input;
     });
+
+    var bifa = form.elements.consimtamant;
+    if (bifa) {
+      var mesajBifa = bifa.checked ? '' : 'Bifează acordul pentru a putea trimite.';
+      eroareCamp('consimtamant', mesajBifa);
+      if (mesajBifa && !primulInvalid) primulInvalid = bifa;
+    }
+
     if (primulInvalid) primulInvalid.focus();
     return !primulInvalid;
   }
@@ -359,8 +409,12 @@
 
     fetch(form.action, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'X-Requested-With': 'fetch', 'Accept': 'application/json' }
+      body: new URLSearchParams(new FormData(form)),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'X-Requested-With': 'fetch',
+        'Accept': 'application/json'
+      }
     })
       .then(function (r) { return r.json().then(function (d) { return { status: r.status, data: d }; }); })
       .then(function (res) {
@@ -375,12 +429,25 @@
             eroareCamp(nume, erori[nume]);
             if (!primul) primul = form.elements[nume];
           });
+          if (noteErrParagraf) {
+            /* Textul real al serverului (captcha eșuată, trimitere eșuată) în
+               loc să fie aruncat — sau revenim la textul static implicit. */
+            if (erori.general) noteErrParagraf.textContent = erori.general;
+            else noteErrParagraf.innerHTML = noteErrHtmlImplicit;
+          }
           if (primul) primul.focus(); else arata(noteErr);
           if (erori.general) arata(noteErr);
         }
       })
-      .catch(function () { arata(noteErr); })
+      .catch(function () {
+        if (noteErrParagraf) noteErrParagraf.innerHTML = noteErrHtmlImplicit;
+        arata(noteErr);
+      })
       .finally(function () {
+        /* Rulează la orice rezultat: dacă trimiterea a eșuat, tokenul deja
+           consumat trebuie resetat, altfel userul rămâne blocat cu
+           timeout-or-duplicate până reîncarcă pagina (I4). */
+        if (window.turnstile) window.turnstile.reset();
         submit.removeAttribute('aria-busy');
         if (labelEl) labelEl.textContent = labelText;
       });
@@ -447,7 +514,7 @@
 
   /* Petale: frunza roz reală din logo, în miniatură, plutind în derivă */
   var petalImg = new Image();
-  petalImg.src = 'assets/img/leaf-rose-480.webp';
+  petalImg.src = '/assets/img/leaf-rose-480.webp';
   var petals = [];
   var NP = small ? 4 : 7;
   function resetPetal(p, first) {
@@ -681,4 +748,77 @@
     target.rx = 0; target.ry = 0;
     kick();
   });
+})();
+
+/* ============================================================
+   DIALOGURILE SERVICIILOR (hub) + PRESELECȚIA DIN QUERY
+   Serviciile fără pagină proprie se deschid într-un <dialog> nativ,
+   generat în servicii.html. Fără JS, butoanele nu fac nimic vizibil —
+   de aceea butonul din dialog duce oricum la pagina de cerere, care
+   funcționează și fără script.
+   ============================================================ */
+(function () {
+  var declansatoare = document.querySelectorAll('[data-dialog]');
+  if (!declansatoare.length) return;
+
+  // Fără suport <dialog>, butoanele devin legături către pagina de cerere:
+  // mai bine o cale mai lungă decât un buton mort.
+  var areDialog = typeof HTMLDialogElement === 'function' &&
+    typeof HTMLDialogElement.prototype.showModal === 'function';
+
+  Array.prototype.forEach.call(declansatoare, function (btn) {
+    var dlg = document.getElementById(btn.getAttribute('data-dialog'));
+    if (!dlg) return;
+
+    if (!areDialog) {
+      var alt = dlg.querySelector('.svc-modal-final a[href]');
+      if (alt) {
+        btn.addEventListener('click', function () { window.location.href = alt.href; });
+      }
+      return;
+    }
+
+    btn.addEventListener('click', function () {
+      dlg.showModal();
+      var titlu = dlg.querySelector('.svc-modal-titlu');
+      if (titlu) {
+        titlu.setAttribute('tabindex', '-1');
+        titlu.focus();
+      }
+    });
+
+    // Închidere: butoanele marcate, plus click pe fundalul din spatele panoului.
+    Array.prototype.forEach.call(dlg.querySelectorAll('[data-inchide]'), function (x) {
+      x.addEventListener('click', function () { dlg.close(); });
+    });
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) dlg.close();
+    });
+
+    // Întoarce focusul pe rândul din care s-a deschis dialogul.
+    dlg.addEventListener('close', function () { btn.focus(); });
+  });
+})();
+
+/* Preselectează serviciul pe pagina de cerere din `?serviciu=<slug>`.
+   Valoarea nu ajunge niciodată în DOM ca text: se caută printre opțiunile
+   deja existente și se selectează una dintre ele sau niciuna. */
+(function () {
+  var select = document.getElementById('serviciu');
+  if (!select || !window.location.search) return;
+
+  var cerut = null;
+  try {
+    cerut = new URLSearchParams(window.location.search).get('serviciu');
+  } catch (e) {
+    return;
+  }
+  if (!cerut) return;
+
+  for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].value === cerut) {
+      select.selectedIndex = i;
+      return;
+    }
+  }
 })();
