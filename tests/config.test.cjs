@@ -42,10 +42,10 @@ test('regula de fonturi vine DUPĂ regula generică de assets, ca să nu fie umb
 // ajută dacă paginile rămân blocate pe un ?v= vechi.
 const PAGINI = ['index.html', 'despre.html', 'portofoliu.html', 'proiecte.html', 'servicii.html', 'contact.html'];
 
-test('toate cele șase pagini folosesc ?v=20260821 pentru css/style.css și js/main.js (M5)', () => {
+test('toate cele șase pagini folosesc ?v=20260820-nav pentru css/style.css și js/main.js (M5)', () => {
   for (const pagina of PAGINI) {
     const html = fs.readFileSync(path.join(__dirname, '..', pagina), 'utf8');
-    assert.ok(html.includes('css/style.css?v=20260821'), `${pagina}: css/style.css nu e la v=20260821`);
-    assert.ok(html.includes('js/main.js?v=20260821'), `${pagina}: js/main.js nu e la v=20260821`);
+    assert.ok(html.includes('css/style.css?v=20260820-nav'), `${pagina}: css/style.css nu e la v=20260820-nav`);
+    assert.ok(html.includes('js/main.js?v=20260820-nav'), `${pagina}: js/main.js nu e la v=20260820-nav`);
   }
 });
